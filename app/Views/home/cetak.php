@@ -8,17 +8,19 @@
         body {
             font-family: 'Times New Roman', Times, serif;
             color: #000;
-            background: #fff;
+            background: #e2e8f0;
             margin: 0;
-            padding: 0;
+            padding: 2rem 0;
             line-height: 1.5;
         }
         .container {
-            width: 100%;
-            max-width: 800px;
+            background: #fff;
+            width: 21cm;
+            min-height: 29.7cm;
             margin: 0 auto;
-            padding: 2cm 2.5cm;
+            padding: 1cm 1cm 1cm 1.5cm;
             box-sizing: border-box;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         .header {
             text-align: center;
@@ -109,10 +111,19 @@
             text-align: left;
             padding-left: 30px;
         }
+        @page {
+            size: A4;
+            margin: 1cm 1cm 1cm 1.5cm;
+        }
         @media print {
-            body { background: #fff; }
-            .container { padding: 0; max-width: 100%; }
-            @page { margin: 2cm; }
+            body { background: #fff; margin: 0; padding: 0; }
+            .container {
+                width: 100%;
+                min-height: auto;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
         }
     </style>
 </head>
@@ -134,7 +145,7 @@
             '[nisn]'             => e($siswa['nisn']),
             '[jenis_kelamin]'    => e($siswa['jenis_kelamin'] === 'L' ? 'Laki-laki' : 'Perempuan'),
             '[jurusan]'          => e($siswa['jurusan']),
-            '[status_kelulusan]' => 'L U L U S',
+            '[status_kelulusan]' => $siswa['status_kelulusan'] === 'lulus' ? 'L U L U S' : 'T I D A K  L U L U S',
             '[nilai_rata_rata]'  => !empty($siswa['nilai_rata_rata']) ? number_format((float)$siswa['nilai_rata_rata'], 2) : '-',
             '[tanggal_surat]'    => format_date(date('Y-m-d')),
             '[kepala_sekolah]'   => e($profil['kepala_sekolah'] ?: '________________________'),
@@ -146,7 +157,7 @@
         ?>
 
         <div class="content">
-            <div class="title">SURAT KETERANGAN LULUS</div>
+            <div class="title">SURAT KETERANGAN KELULUSAN</div>
 
             <?php
             $template = $profil['template_surat'] ?? '';

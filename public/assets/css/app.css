@@ -282,6 +282,7 @@ textarea.form-input {
 .detail-full    { grid-column: 1 / -1; }
 .detail-label   { font-size: .75rem; color: var(--clr-text-muted); text-transform: uppercase; letter-spacing: .05em; }
 .detail-value   { font-weight: 600; }
+.result-actions { margin-top: 1.5rem; text-align: center; }
 
 /* ── Info Section ───────────────────────────────────────────────────────── */
 .info-section { padding: 4rem 0; }

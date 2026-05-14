@@ -288,7 +288,7 @@ final class KelulusanService
             'tempat_lahir'      => 'required|min:2|max:100',
             'tanggal_lahir'     => 'required|date',
             'jenis_kelamin'     => 'required|in:L,P',
-            'jurusan'           => 'required|min:2|max:100',
+            'jurusan'           => 'max:100',
             'tahun_lulus'       => 'required|integer',
             'status_kelulusan'  => 'required|in:lulus,tidak_lulus',
             'nilai_rata_rata'   => 'required|numeric',

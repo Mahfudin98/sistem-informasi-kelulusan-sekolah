@@ -64,8 +64,8 @@ final class HomeController extends BaseController
         }
 
         $result = $this->service->cekKelulusan($nisn);
-        if (!$result['found'] || $result['siswa']['status_kelulusan'] !== 'lulus') {
-            abort(404, 'Data tidak ditemukan atau siswa tidak lulus.');
+        if (!$result['found']) {
+            abort(404, 'Data tidak ditemukan.');
         }
 
         $this->view('home.cetak', [

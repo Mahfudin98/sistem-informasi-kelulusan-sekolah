@@ -99,10 +99,12 @@
                                 <span class="detail-label">NISN</span>
                                 <span class="detail-value"><?= e($s['nisn']) ?></span>
                             </div>
+                            <?php if (!empty($s['jurusan']) && trim($s['jurusan']) !== '-'): ?>
                             <div class="detail-item">
                                 <span class="detail-label">Jurusan</span>
                                 <span class="detail-value"><?= e($s['jurusan']) ?></span>
                             </div>
+                            <?php endif; ?>
                             <div class="detail-item">
                                 <span class="detail-label">Tahun Lulus</span>
                                 <span class="detail-value"><?= e($s['tahun_lulus']) ?></span>
@@ -121,14 +123,11 @@
                             <?php endif; ?>
                         </div>
                     </div>
-
-                    <?php if ($lulus): ?>
-                    <div style="margin-top: 1.5rem; text-align: center;">
-                        <a href="/cetak/<?= e($s['nisn']) ?>" target="_blank" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1rem; box-shadow: 0 4px 15px rgba(99,102,241,0.3);">
-                            🖨️ Cetak Surat Keterangan Lulus (SKL)
+                    <div class="result-actions">
+                        <a href="/cetak/<?= e($s['nisn']) ?>" target="_blank" class="btn btn-primary">
+                            🖨️ Cetak Surat Keterangan
                         </a>
                     </div>
-                    <?php endif; ?>
                 </div>
 
             <?php else: ?>

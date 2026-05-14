@@ -89,7 +89,7 @@ $cls    = fn(string $k) => $err($k) ? 'form-input is-invalid' : 'form-input';
 
                 <!-- Jurusan -->
                 <div class="form-group">
-                    <label class="form-label" for="jurusan">Jurusan <span class="required">*</span></label>
+                    <label class="form-label" for="jurusan">Jurusan (Opsional)</label>
                     <input type="text" id="jurusan" name="jurusan"
                            class="<?= $cls('jurusan') ?>"
                            value="<?= e($old('jurusan')) ?>"

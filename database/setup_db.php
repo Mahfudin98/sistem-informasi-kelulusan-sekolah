@@ -45,7 +45,7 @@ try {
             `tempat_lahir` VARCHAR(100) NOT NULL,
             `tanggal_lahir` DATE NOT NULL,
             `jenis_kelamin` ENUM('L', 'P') NOT NULL,
-            `jurusan` VARCHAR(100) NOT NULL,
+            `jurusan` VARCHAR(100) NULL,
             `tahun_lulus` INT NOT NULL,
             `status_kelulusan` ENUM('lulus', 'tidak_lulus') NOT NULL,
             `nilai_rata_rata` DECIMAL(5,2) NULL,
