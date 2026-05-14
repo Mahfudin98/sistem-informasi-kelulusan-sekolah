@@ -26,7 +26,7 @@ Sistem Pengecekan Kelulusan Online yang dibangun menggunakan arsitektur MVC (Mod
 3. Sesuaikan konfigurasi database di file `.env`. Pastikan database MySQL sudah berjalan.
 4. Jalankan script setup database untuk membuat tabel dan akun admin default:
    ```bash
-   php setup_db.php
+   php database/setup_db.php
    ```
 5. Jalankan development server lokal:
    ```bash
