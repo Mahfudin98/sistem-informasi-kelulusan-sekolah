@@ -1,0 +1,313 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services;
+
+use App\Repositories\SiswaRepository;
+use App\Validation\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+/**
+ * Kelulusan Service
+ *
+ * Business logic for checking graduation status and managing student data.
+ * Controllers stay thin by delegating all business rules here.
+ */
+final class KelulusanService
+{
+    public function __construct(
+        private readonly SiswaRepository $repo = new SiswaRepository(),
+    ) {}
+
+    // ── Public Lookup ─────────────────────────────────────────────────────────
+
+    /**
+     * Look up a student's graduation status by NISN.
+     *
+     * @return array{found: bool, siswa: array|null, message: string}
+     */
+    public function cekKelulusan(string $nisn): array
+    {
+        $nisn = trim($nisn);
+
+        if ($nisn === '') {
+            return ['found' => false, 'siswa' => null, 'message' => 'NISN tidak boleh kosong.'];
+        }
+
+        $siswa = $this->repo->findByNisn($nisn);
+
+        if ($siswa === null) {
+            return [
+                'found'   => false,
+                'siswa'   => null,
+                'message' => "Data dengan NISN <strong>{$nisn}</strong> tidak ditemukan.",
+            ];
+        }
+
+        $lulus   = $siswa['status_kelulusan'] === 'lulus';
+        $message = $lulus
+            ? "Selamat! <strong>{$siswa['nama']}</strong> dinyatakan <strong class=\"text-success\">LULUS</strong>."
+            : "<strong>{$siswa['nama']}</strong> dinyatakan <strong class=\"text-danger\">TIDAK LULUS</strong>.";
+
+        return ['found' => true, 'siswa' => $siswa, 'message' => $message];
+    }
+
+    // ── Admin CRUD ────────────────────────────────────────────────────────────
+
+    /**
+     * Get a paginated, filtered list of students.
+     */
+    public function getPaginatedList(
+        int    $page,
+        string $search  = '',
+        ?int   $tahun   = null,
+        ?string $status = null,
+    ): array {
+        return $this->repo->paginate($page, 15, $search, $tahun, $status);
+    }
+
+    /**
+     * Validate and create a new student record.
+     *
+     * @return array{success: bool, errors: array, id: string|false}
+     */
+    public function create(array $data): array
+    {
+        $validator = $this->validateSiswa($data);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors(), 'id' => false];
+        }
+
+        // Check NISN uniqueness
+        if ($this->repo->findByNisn($data['nisn'])) {
+            return [
+                'success' => false,
+                'errors'  => ['nisn' => ['NISN sudah terdaftar dalam sistem.']],
+                'id'      => false,
+            ];
+        }
+
+        $id = $this->repo->create($this->sanitize($data));
+
+        return ['success' => true, 'errors' => [], 'id' => $id];
+    }
+
+    /**
+     * Validate and update an existing student record.
+     *
+     * @return array{success: bool, errors: array}
+     */
+    public function update(int $id, array $data): array
+    {
+        $validator = $this->validateSiswa($data, $id);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
+
+        $this->repo->update($id, $this->sanitize($data));
+
+        return ['success' => true, 'errors' => []];
+    }
+
+    /**
+     * Delete a student by ID.
+     */
+    public function delete(int $id): bool
+    {
+        return $this->repo->delete($id) > 0;
+    }
+
+    /**
+     * Get aggregate statistics.
+     */
+    public function statistik(): array
+    {
+        return $this->repo->statistik();
+    }
+
+    public function availableYears(): array
+    {
+        return $this->repo->availableYears();
+    }
+
+    // ── Bulk Excel ────────────────────────────────────────────────────────────
+
+    public function importExcel(string $filePath): array
+    {
+        // Prevent timeout for large files
+        set_time_limit(0);
+
+        try {
+            $spreadsheet = IOFactory::load($filePath);
+            $worksheet   = $spreadsheet->getActiveSheet();
+            $rows        = $worksheet->toArray(null, true, true, false);
+            
+            // Remove header row
+            array_shift($rows);
+
+            $count = 0;
+            $errors = [];
+
+            foreach ($rows as $index => $row) {
+                // Skip empty rows (checking NISN)
+                if (empty($row[0])) {
+                    continue;
+                }
+
+                // Handle NISN
+                $nisn = trim((string) $row[0]);
+                if (is_numeric($nisn)) {
+                    $nisn = number_format((float)$nisn, 0, '', '');
+                }
+                $nisn = str_pad($nisn, 10, '0', STR_PAD_LEFT);
+
+                // Handle Date
+                $tgl = trim((string) $row[3]);
+                if (is_numeric($tgl)) {
+                    // Excel serialized date
+                    $tglObj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tgl);
+                    $tgl = $tglObj->format('Y-m-d');
+                } else {
+                    $time = strtotime($tgl);
+                    $tgl = $time ? date('Y-m-d', $time) : $tgl;
+                }
+
+                // Handle Nilai
+                $nilai = trim((string) $row[8]);
+                if (str_contains($nilai, ',')) {
+                    $nilai = str_replace(',', '.', $nilai);
+                }
+
+                $data = [
+                    'nisn'             => $nisn,
+                    'nama'             => trim((string) $row[1]),
+                    'tempat_lahir'     => trim((string) $row[2]),
+                    'tanggal_lahir'    => $tgl,
+                    'jenis_kelamin'    => strtoupper(trim((string) $row[4])),
+                    'jurusan'          => trim((string) $row[5]),
+                    'tahun_lulus'      => (int) $row[6],
+                    'status_kelulusan' => strtolower(trim((string) $row[7])),
+                    'nilai_rata_rata'  => (float) $nilai,
+                    'keterangan'       => trim((string) ($row[9] ?? '')),
+                ];
+
+                $validator = $this->validateSiswa($data);
+
+                if ($validator->fails()) {
+                    $errors[] = "Baris " . ($index + 2) . " gagal divalidasi (" . implode(', ', array_map(fn($e) => implode(', ', $e), $validator->errors())) . ")";
+                    continue;
+                }
+
+                // Check if NISN exists to decide whether to update or insert
+                $existing = $this->repo->findByNisn($data['nisn']);
+                
+                if ($existing) {
+                    $this->repo->update((int) $existing['id'], $this->sanitize($data));
+                } else {
+                    $this->repo->create($this->sanitize($data));
+                }
+
+                $count++;
+            }
+
+            if ($count === 0 && count($errors) > 0) {
+                return ['success' => false, 'count' => 0, 'message' => 'Gagal mengimpor data. Error pertama: ' . $errors[0]];
+            }
+
+            $msg = "Berhasil mengimpor {$count} data.";
+            if (count($errors) > 0) {
+                $msg .= " Namun, " . count($errors) . " data gagal diimpor (contoh: " . $errors[0] . ").";
+            }
+
+            return ['success' => true, 'count' => $count, 'message' => $msg];
+
+        } catch (\Exception $e) {
+            return ['success' => false, 'count' => 0, 'message' => 'Terjadi kesalahan saat memproses file Excel: ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Generate and download an Excel template for student bulk import.
+     */
+    public function downloadExcelTemplate(): void
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set Headers
+        $headers = [
+            'NISN', 'Nama Lengkap', 'Tempat Lahir', 'Tanggal Lahir (YYYY-MM-DD)', 
+            'Jenis Kelamin (L/P)', 'Jurusan', 'Tahun Lulus', 
+            'Status (lulus/tidak_lulus)', 'Nilai Rata-rata', 'Keterangan (Opsional)'
+        ];
+
+        $col = 'A';
+        foreach ($headers as $header) {
+            $sheet->setCellValue($col . '1', $header);
+            // Make header bold
+            $sheet->getStyle($col . '1')->getFont()->setBold(true);
+            // Auto size columns
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+            $col++;
+        }
+
+        // Add dummy data row
+        $sheet->setCellValue('A2', '1234567890');
+        $sheet->setCellValue('B2', 'Budi Santoso');
+        $sheet->setCellValue('C2', 'Jakarta');
+        $sheet->setCellValue('D2', '2005-08-15');
+        $sheet->setCellValue('E2', 'L');
+        $sheet->setCellValue('F2', 'IPA');
+        $sheet->setCellValue('G2', date('Y'));
+        $sheet->setCellValue('H2', 'lulus');
+        $sheet->setCellValue('I2', '85.5');
+        $sheet->setCellValue('J2', 'Lulus dengan baik');
+
+        // Output to browser
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Template_Import_Siswa.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+        exit;
+    }
+
+    // ── Internals ─────────────────────────────────────────────────────────────
+
+    private function validateSiswa(array $data, ?int $excludeId = null): \App\Validation\Validator
+    {
+        return Validator::make($data, [
+            'nisn'              => 'required|numeric|length:10',
+            'nama'              => 'required|min:3|max:150',
+            'tempat_lahir'      => 'required|min:2|max:100',
+            'tanggal_lahir'     => 'required|date',
+            'jenis_kelamin'     => 'required|in:L,P',
+            'jurusan'           => 'required|min:2|max:100',
+            'tahun_lulus'       => 'required|integer',
+            'status_kelulusan'  => 'required|in:lulus,tidak_lulus',
+            'nilai_rata_rata'   => 'required|numeric',
+        ]);
+    }
+
+    private function sanitize(array $data): array
+    {
+        return [
+            'nisn'             => trim($data['nisn']),
+            'nama'             => trim($data['nama']),
+            'tempat_lahir'     => trim($data['tempat_lahir']),
+            'tanggal_lahir'    => $data['tanggal_lahir'],
+            'jenis_kelamin'    => $data['jenis_kelamin'],
+            'jurusan'          => trim($data['jurusan']),
+            'tahun_lulus'      => (int) $data['tahun_lulus'],
+            'status_kelulusan' => $data['status_kelulusan'],
+            'nilai_rata_rata'  => (float) $data['nilai_rata_rata'],
+            'keterangan'       => trim($data['keterangan'] ?? ''),
+        ];
+    }
+}

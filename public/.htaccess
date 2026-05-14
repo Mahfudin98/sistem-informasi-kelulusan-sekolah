@@ -1,0 +1,18 @@
+Options -Indexes
+RewriteEngine On
+
+# Block access to hidden files & directories (e.g. .env, .git)
+RewriteRule ^(.*/)?\.(?!well-known) - [F,L]
+
+# Allow direct access to existing files (assets, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route everything through index.php
+RewriteRule ^ index.php [L,QSA]
+
+# Security headers
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
