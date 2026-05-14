@@ -45,6 +45,7 @@
                 <thead>
                     <tr class="bg-slate-50">
                         <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Siswa</th>
+                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Tahun Lulus</th>
                         <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Jurusan</th>
                         <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Status</th>
                         <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Rata-rata</th>
@@ -57,8 +58,11 @@
                         <td class="px-4 py-4">
                             <div class="flex flex-col">
                                 <span class="font-extrabold text-text"><?= e($s['nama']) ?></span>
-                                <span class="text-[0.75rem] text-text-muted font-medium"><?= e($s['nisn']) ?> • TA <?= e($s['tahun_lulus']) ?></span>
+                                <span class="text-[0.75rem] text-text-muted font-medium"><?= e($s['nisn']) ?></span>
                             </div>
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="text-primary font-medium"><?= e($s['tahun_lulus'] ?: '-') ?></span>
                         </td>
                         <td class="px-4 py-4">
                             <span class="text-text-muted font-medium italic"><?= e($s['jurusan'] ?: '-') ?></span>
@@ -75,8 +79,8 @@
                         </td>
                         <td class="px-4 py-4">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="/admin/siswa/edit/<?= e($s['id']) ?>" class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-all" title="Edit">✏️</a>
-                                <form method="POST" action="/admin/siswa/delete/<?= e($s['id']) ?>" onsubmit="return confirm('Hapus data siswa ini?')">
+                                <a href="/admin/siswa/<?= e($s['id']) ?>/edit" class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-all" title="Edit">✏️</a>
+                                <form method="POST" action="/admin/siswa/<?= e($s['id']) ?>/delete" onsubmit="return confirm('Hapus data siswa ini?')">
                                     <?= csrf_field() ?>
                                     <button type="submit" class="w-8 h-8 flex items-center justify-center bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-100 transition-all cursor-pointer" title="Hapus">🗑</button>
                                 </form>
