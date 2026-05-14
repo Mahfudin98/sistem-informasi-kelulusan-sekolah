@@ -11,145 +11,146 @@
 $errors = flash('errors') ?? [];
 $old    = fn(string $k) => old($k, $siswa[$k] ?? '');
 $err    = fn(string $k) => $errors[$k][0] ?? null;
-$cls    = fn(string $k) => $err($k) ? 'form-input is-invalid' : 'form-input';
+$input_base = "w-full bg-white/5 border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all";
+$cls    = fn(string $k) => $err($k) ? $input_base . ' border-red-500/50 ring-4 ring-red-500/10' : $input_base;
 ?>
 
-<div class="card">
-    <div class="card-header">
-        <h2 class="card-title">
+<div class="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm animate-fade-in">
+    <div class="flex items-center justify-between p-6 border-b border-border">
+        <h2 class="text-lg font-bold">
             <?= isset($siswa) ? '✏️ Edit Data Siswa' : '➕ Tambah Siswa Baru' ?>
         </h2>
-        <a href="/admin/siswa" class="btn btn-ghost btn-sm">← Kembali</a>
+        <a href="/admin/siswa" class="text-text-muted hover:text-text text-sm font-bold transition-colors">← Kembali</a>
     </div>
-    <div class="card-body">
-        <form method="POST" action="<?= e($action) ?>" id="siswaForm" novalidate>
+    <div class="p-6">
+        <form method="POST" action="<?= e($action) ?>" id="siswaForm" class="flex flex-col gap-8" novalidate>
             <?= csrf_field() ?>
 
-            <div class="form-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <!-- NISN -->
-                <div class="form-group">
-                    <label class="form-label" for="nisn">NISN <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="nisn">NISN <span class="text-red-500">*</span></label>
                     <input type="text" id="nisn" name="nisn"
                            class="<?= $cls('nisn') ?>"
                            value="<?= e($old('nisn')) ?>"
                            maxlength="10" inputmode="numeric"
                            placeholder="10 digit NISN">
                     <?php if ($e = $err('nisn')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Nama -->
-                <div class="form-group form-group-wide">
-                    <label class="form-label" for="nama">Nama Lengkap <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="nama">Nama Lengkap <span class="text-red-500">*</span></label>
                     <input type="text" id="nama" name="nama"
                            class="<?= $cls('nama') ?>"
                            value="<?= e($old('nama')) ?>"
                            placeholder="Nama lengkap siswa">
                     <?php if ($e = $err('nama')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Tempat Lahir -->
-                <div class="form-group">
-                    <label class="form-label" for="tempat_lahir">Tempat Lahir <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="tempat_lahir">Tempat Lahir <span class="text-red-500">*</span></label>
                     <input type="text" id="tempat_lahir" name="tempat_lahir"
                            class="<?= $cls('tempat_lahir') ?>"
                            value="<?= e($old('tempat_lahir')) ?>">
                     <?php if ($e = $err('tempat_lahir')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Tanggal Lahir -->
-                <div class="form-group">
-                    <label class="form-label" for="tanggal_lahir">Tanggal Lahir <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="tanggal_lahir">Tanggal Lahir <span class="text-red-500">*</span></label>
                     <input type="date" id="tanggal_lahir" name="tanggal_lahir"
                            class="<?= $cls('tanggal_lahir') ?>"
                            value="<?= e($old('tanggal_lahir')) ?>">
                     <?php if ($e = $err('tanggal_lahir')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Jenis Kelamin -->
-                <div class="form-group">
-                    <label class="form-label" for="jenis_kelamin">Jenis Kelamin <span class="required">*</span></label>
-                    <select id="jenis_kelamin" name="jenis_kelamin" class="form-select <?= $err('jenis_kelamin') ? 'is-invalid' : '' ?>">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="jenis_kelamin">Jenis Kelamin <span class="text-red-500">*</span></label>
+                    <select id="jenis_kelamin" name="jenis_kelamin" class="<?= $cls('jenis_kelamin') ?>">
                         <option value="">-- Pilih --</option>
                         <option value="L" <?= $old('jenis_kelamin') === 'L' ? 'selected' : '' ?>>Laki-laki</option>
                         <option value="P" <?= $old('jenis_kelamin') === 'P' ? 'selected' : '' ?>>Perempuan</option>
                     </select>
                     <?php if ($e = $err('jenis_kelamin')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Jurusan -->
-                <div class="form-group">
-                    <label class="form-label" for="jurusan">Jurusan (Opsional)</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="jurusan">Jurusan (Opsional)</label>
                     <input type="text" id="jurusan" name="jurusan"
                            class="<?= $cls('jurusan') ?>"
                            value="<?= e($old('jurusan')) ?>"
                            placeholder="Contoh: IPA, IPS, Rekayasa Perangkat Lunak">
                     <?php if ($e = $err('jurusan')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Tahun Lulus -->
-                <div class="form-group">
-                    <label class="form-label" for="tahun_lulus">Tahun Lulus <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="tahun_lulus">Tahun Lulus <span class="text-red-500">*</span></label>
                     <input type="number" id="tahun_lulus" name="tahun_lulus"
                            class="<?= $cls('tahun_lulus') ?>"
                            value="<?= e($old('tahun_lulus') ?: date('Y')) ?>"
                            min="2000" max="<?= date('Y') + 1 ?>">
                     <?php if ($e = $err('tahun_lulus')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Status Kelulusan -->
-                <div class="form-group">
-                    <label class="form-label" for="status_kelulusan">Status Kelulusan <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="status_kelulusan">Status Kelulusan <span class="text-red-500">*</span></label>
                     <select id="status_kelulusan" name="status_kelulusan"
-                            class="form-select <?= $err('status_kelulusan') ? 'is-invalid' : '' ?>">
+                            class="<?= $cls('status_kelulusan') ?>">
                         <option value="">-- Pilih --</option>
                         <option value="lulus"       <?= $old('status_kelulusan') === 'lulus'       ? 'selected' : '' ?>>Lulus</option>
                         <option value="tidak_lulus" <?= $old('status_kelulusan') === 'tidak_lulus' ? 'selected' : '' ?>>Tidak Lulus</option>
                     </select>
                     <?php if ($e = $err('status_kelulusan')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Nilai Rata-rata -->
-                <div class="form-group">
-                    <label class="form-label" for="nilai_rata_rata">Nilai Rata-rata <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="nilai_rata_rata">Nilai Rata-rata <span class="text-red-500">*</span></label>
                     <input type="number" id="nilai_rata_rata" name="nilai_rata_rata"
                            class="<?= $cls('nilai_rata_rata') ?>"
                            value="<?= e($old('nilai_rata_rata')) ?>"
                            step="0.01" min="0" max="100">
                     <?php if ($e = $err('nilai_rata_rata')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Keterangan -->
-                <div class="form-group form-group-wide">
-                    <label class="form-label" for="keterangan">Keterangan</label>
+                <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="keterangan">Keterangan</label>
                     <textarea id="keterangan" name="keterangan"
-                              class="form-input"
-                              rows="3"><?= e($old('keterangan')) ?></textarea>
+                               class="<?= $input_base ?>"
+                               rows="3"><?= e($old('keterangan')) ?></textarea>
                 </div>
 
-            </div><!-- /.form-grid -->
+            </div><!-- /.grid -->
 
-            <div class="form-actions">
-                <a href="/admin/siswa" class="btn btn-ghost">Batal</a>
-                <button type="submit" class="btn btn-primary">
+            <div class="flex items-center justify-end gap-3 mt-4">
+                <a href="/admin/siswa" class="text-text-muted hover:text-text font-bold text-sm px-4 transition-colors">Batal</a>
+                <button type="submit" class="bg-primary text-white font-bold py-2.5 px-8 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all cursor-pointer">
                     <?= isset($siswa) ? 'Simpan Perubahan' : 'Tambah Siswa' ?>
                 </button>
             </div>

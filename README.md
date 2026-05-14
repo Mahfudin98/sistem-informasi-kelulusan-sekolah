@@ -23,12 +23,17 @@ Sistem Pengecekan Kelulusan Online yang dibangun menggunakan arsitektur MVC (Mod
    ```bash
    composer install
    ```
-3. Sesuaikan konfigurasi database di file `.env`. Pastikan database MySQL sudah berjalan.
-4. Jalankan script setup database untuk membuat tabel dan akun admin default:
+3. **Build CSS:**
+   ```bash
+   npm install
+   npm run build
+   ```
+4. Sesuaikan konfigurasi database di file `.env`. Pastikan database MySQL sudah berjalan.
+5. Jalankan script setup database untuk membuat tabel dan akun admin default:
    ```bash
    php database/setup_db.php
    ```
-5. Jalankan development server lokal:
+6. Jalankan development server lokal:
    ```bash
    php -S localhost:8000 -t public
    ```

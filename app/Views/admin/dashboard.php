@@ -1,71 +1,73 @@
 <!-- Stats Cards -->
-<div class="stats-grid">
-    <div class="stat-card stat-blue">
-        <div class="stat-icon">👥</div>
-        <div class="stat-body">
-            <div class="stat-value"><?= number_format($totalSiswa) ?></div>
-            <div class="stat-label">Total Siswa</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-surface border border-border rounded-2xl p-6 flex items-center gap-5 hover:shadow-md transition-all">
+        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-2xl shrink-0">👥</div>
+        <div>
+            <div class="text-2xl font-black text-text leading-none"><?= number_format($totalSiswa) ?></div>
+            <div class="text-text-muted text-sm mt-1">Total Siswa</div>
         </div>
     </div>
-    <div class="stat-card stat-green">
-        <div class="stat-icon">✅</div>
-        <div class="stat-body">
-            <div class="stat-value"><?= number_format($totalLulus) ?></div>
-            <div class="stat-label">Siswa Lulus</div>
+    <div class="bg-surface border border-border rounded-2xl p-6 flex items-center gap-5 hover:shadow-md transition-all">
+        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-2xl shrink-0">✅</div>
+        <div>
+            <div class="text-2xl font-black text-text leading-none"><?= number_format($totalLulus) ?></div>
+            <div class="text-text-muted text-sm mt-1">Siswa Lulus</div>
         </div>
     </div>
-    <div class="stat-card stat-red">
-        <div class="stat-icon">❌</div>
-        <div class="stat-body">
-            <div class="stat-value"><?= number_format($totalTidak) ?></div>
-            <div class="stat-label">Tidak Lulus</div>
+    <div class="bg-surface border border-border rounded-2xl p-6 flex items-center gap-5 hover:shadow-md transition-all">
+        <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-2xl shrink-0">❌</div>
+        <div>
+            <div class="text-2xl font-black text-text leading-none"><?= number_format($totalTidak) ?></div>
+            <div class="text-text-muted text-sm mt-1">Tidak Lulus</div>
         </div>
     </div>
-    <div class="stat-card stat-purple">
-        <div class="stat-icon">📈</div>
-        <div class="stat-body">
-            <div class="stat-value"><?= $persentase ?>%</div>
-            <div class="stat-label">Tingkat Kelulusan</div>
+    <div class="bg-surface border border-border rounded-2xl p-6 flex items-center gap-5 hover:shadow-md transition-all">
+        <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-2xl shrink-0">📈</div>
+        <div>
+            <div class="text-2xl font-black text-text leading-none"><?= $persentase ?>%</div>
+            <div class="text-text-muted text-sm mt-1">Tingkat Kelulusan</div>
         </div>
     </div>
 </div>
 
 <!-- Statistik Table -->
-<div class="card mt-6">
-    <div class="card-header">
-        <h2 class="card-title">📊 Rekap Kelulusan per Tahun</h2>
-        <a href="/admin/siswa/create" class="btn btn-primary btn-sm">+ Tambah Siswa</a>
+<div class="bg-surface border border-border rounded-2xl overflow-hidden mt-8 shadow-sm">
+    <div class="flex items-center justify-between p-6 border-b border-border flex-wrap gap-4">
+        <h2 class="text-lg font-bold">📊 Rekap Kelulusan per Tahun</h2>
+        <a href="/admin/siswa/create" class="bg-primary text-white text-sm font-bold py-2 px-5 rounded-lg hover:opacity-90 transition-all shadow-md shadow-primary/10">+ Tambah Siswa</a>
     </div>
-    <div class="card-body">
+    <div class="p-6">
         <?php if (empty($statistik)): ?>
-            <p class="text-muted text-center py-8">Belum ada data kelulusan.</p>
+            <p class="text-text-muted text-center py-12">Belum ada data kelulusan.</p>
         <?php else: ?>
-        <div class="table-responsive">
-            <table class="table">
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-sm">
                 <thead>
-                    <tr>
-                        <th>Tahun</th>
-                        <th>Total Siswa</th>
-                        <th>Lulus</th>
-                        <th>Tidak Lulus</th>
-                        <th>Rata-rata Nilai</th>
-                        <th>% Kelulusan</th>
+                    <tr class="bg-slate-50">
+                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Tahun</th>
+                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Total Siswa</th>
+                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Lulus</th>
+                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Tidak Lulus</th>
+                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Rata-rata Nilai</th>
+                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">% Kelulusan</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-border">
                     <?php foreach ($statistik as $row): ?>
                         <?php $persen = $row['total'] > 0
                             ? round(($row['lulus'] / $row['total']) * 100, 1) : 0; ?>
-                        <tr>
-                            <td><strong><?= e($row['tahun_lulus']) ?></strong></td>
-                            <td><?= number_format($row['total']) ?></td>
-                            <td><span class="badge badge-success"><?= number_format($row['lulus']) ?></span></td>
-                            <td><span class="badge badge-danger"><?= number_format($row['tidak_lulus']) ?></span></td>
-                            <td><?= number_format((float)$row['rata_nilai'], 2) ?></td>
-                            <td>
-                                <div class="progress-bar-wrap">
-                                    <div class="progress-bar" style="width:<?= $persen ?>%"></div>
-                                    <span><?= $persen ?>%</span>
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="px-4 py-4 font-bold text-text"><?= e($row['tahun_lulus']) ?></td>
+                            <td class="px-4 py-4 text-text-muted font-medium"><?= number_format($row['total']) ?></td>
+                            <td class="px-4 py-4"><span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold"><?= number_format($row['lulus']) ?></span></td>
+                            <td class="px-4 py-4"><span class="px-3 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-bold"><?= number_format($row['tidak_lulus']) ?></span></td>
+                            <td class="px-4 py-4 font-mono font-bold text-primary"><?= number_format((float)$row['rata_nilai'], 2) ?></td>
+                            <td class="px-4 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1 h-2 bg-primary/30 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary transition-all" style="width:<?= $persen ?>%"></div>
+                                    </div>
+                                    <span class="text-xs font-black text-text-muted shrink-0"><?= $persen ?>%</span>
                                 </div>
                             </td>
                         </tr>

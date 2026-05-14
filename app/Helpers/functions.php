@@ -209,7 +209,7 @@ if (!function_exists('format_currency')) {
 
 if (!function_exists('pagination')) {
     /**
-     * Generate a simple Bootstrap-compatible pagination HTML.
+     * Generate a Tailwind CSS pagination HTML.
      *
      * @param array{page: int, lastPage: int, total: int} $meta
      */
@@ -219,23 +219,33 @@ if (!function_exists('pagination')) {
             return '';
         }
 
-        $html  = '<nav aria-label="Navigasi Halaman"><ul class="pagination">';
+        $html  = '<nav aria-label="Pagination" class="flex items-center gap-1">';
         $cur   = $meta['page'];
         $last  = $meta['lastPage'];
         $sep   = str_contains($baseUrl, '?') ? '&' : '?';
 
-        $html .= '<li class="page-item' . ($cur <= 1 ? ' disabled' : '') . '">';
-        $html .= '<a class="page-link" href="' . e($baseUrl . $sep . 'page=' . ($cur - 1)) . '">&laquo;</a></li>';
+        // Base styles for links
+        $baseCls = "w-9 h-9 flex items-center justify-center rounded-lg border border-border text-xs font-bold transition-all hover:border-primary/50";
+        $activeCls = "bg-primary border-primary text-white shadow-lg shadow-primary/20 hover:bg-primary/10";
+        $disabledCls = "opacity-30 pointer-events-none cursor-not-allowed";
 
+        // Previous button
+        $prevUrl = $cur <= 1 ? '#' : $baseUrl . $sep . 'page=' . ($cur - 1);
+        $prevDis = $cur <= 1 ? $disabledCls : '';
+        $html .= '<a href="' . e($prevUrl) . '" class="' . $baseCls . ' ' . $prevDis . '" title="Sebelumnya">&laquo;</a>';
+
+        // Page numbers
         for ($p = max(1, $cur - 2); $p <= min($last, $cur + 2); $p++) {
-            $active = $p === $cur ? ' active' : '';
-            $html  .= '<li class="page-item' . $active . '">';
-            $html  .= '<a class="page-link" href="' . e($baseUrl . $sep . 'page=' . $p) . '">' . $p . '</a></li>';
+            $active = $p === $cur ? $activeCls : '';
+            $html .= '<a href="' . e($baseUrl . $sep . 'page=' . $p) . '" class="' . $baseCls . ' ' . $active . '">' . $p . '</a>';
         }
 
-        $html .= '<li class="page-item' . ($cur >= $last ? ' disabled' : '') . '">';
-        $html .= '<a class="page-link" href="' . e($baseUrl . $sep . 'page=' . ($cur + 1)) . '">&raquo;</a></li>';
-        $html .= '</ul></nav>';
+        // Next button
+        $nextUrl = $cur >= $last ? '#' : $baseUrl . $sep . 'page=' . ($cur + 1);
+        $nextDis = $cur >= $last ? $disabledCls : '';
+        $html .= '<a href="' . e($nextUrl) . '" class="' . $baseCls . ' ' . $nextDis . '" title="Selanjutnya">&raquo;</a>';
+
+        $html .= '</nav>';
 
         return $html;
     }
@@ -263,5 +273,27 @@ if (!function_exists('profil_sekolah')) {
         }
 
         return $profil[$key] ?? $default;
+    }
+}
+
+if (!function_exists('get_contrast_color')) {
+    /**
+     * Determine whether black or white text should be used based on background color brightness.
+     */
+    function get_contrast_color(string $hexColor): string
+    {
+        $hex = str_replace('#', '', $hexColor);
+        if (strlen($hex) === 3) {
+            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+        }
+
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+
+        // YIQ brightness formula
+        $yiq = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+        return ($yiq >= 128) ? '#000000' : '#ffffff';
     }
 }

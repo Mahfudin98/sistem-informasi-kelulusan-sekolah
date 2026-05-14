@@ -1,10 +1,14 @@
 <!-- ── Hero ──────────────────────────────────────────────────────────────── -->
-<section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-inner">
-        <div class="hero-badge">🎓 Sistem Kelulusan Online — <?= e(profil_sekolah('nama_sekolah', env('APP_NAME'))) ?></div>
-        <h1 class="hero-title">Cek Status <span class="gradient-text">Kelulusan</span> Kamu</h1>
-        <p class="hero-subtitle">
+<section class="relative overflow-hidden py-16 md:py-24 min-h-[80vh] flex items-center">
+    <div class="absolute inset-0 z-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,rgba(99,102,241,0.05),transparent)]"></div>
+    <div class="container relative z-10 text-center mx-auto px-6">
+        <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-4 py-1.5 rounded-full text-sm font-bold mb-6">
+            🎓 Sistem Kelulusan Online — <?= e(profil_sekolah('nama_sekolah', env('APP_NAME'))) ?>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4 tracking-tight">
+            Cek Status <span class="text-primary">Kelulusan</span> Kamu
+        </h1>
+        <p class="text-text-muted text-lg max-w-xl mx-auto mb-10">
             Masukkan NISN (Nomor Induk Siswa Nasional) untuk mengetahui
             status kelulusan kamu secara cepat dan akurat.
         </p>
@@ -16,12 +20,12 @@
         if ($isWaiting):
             $target = date('Y-m-d\TH:i:s', strtotime($profil['tgl_pengumuman']));
         ?>
-        <div class="lookup-card" style="text-align: center;">
-            <h2 style="margin-bottom: 1rem; font-size: 1.5rem; color: var(--clr-text);">Pengumuman Kelulusan Dibuka Dalam:</h2>
-            <div id="countdown" style="display: flex; gap: 1rem; justify-content: center; font-size: 2rem; font-weight: 800; color: var(--clr-primary);">
+        <div class="bg-surface border border-border rounded-3xl p-8 max-w-2xl mx-auto mb-8 shadow-lg text-center">
+            <h2 class="text-2xl font-bold mb-4">Pengumuman Kelulusan Dibuka Dalam:</h2>
+            <div id="countdown" class="flex gap-4 justify-center text-3xl md:text-5xl font-black text-primary">
                 <!-- Timer inserted here via JS -->
             </div>
-            <p style="margin-top: 1rem; color: var(--clr-text-muted);">Tanggal: <?= format_date($profil['tgl_pengumuman'], 'd F Y H:i') ?> WIB</p>
+            <p class="mt-6 text-text-muted font-medium italic">Tanggal: <?= format_date($profil['tgl_pengumuman'], 'd F Y H:i') ?> WIB</p>
         </div>
         <script>
             const countDownDate = new Date("<?= $target ?>").getTime();
@@ -39,37 +43,39 @@
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
                 
                 document.getElementById("countdown").innerHTML = 
-                    "<div>" + days + "<div style='font-size: 0.8rem; font-weight: normal; color: var(--clr-text-muted);'>Hari</div></div>" +
-                    "<div>" + hours + "<div style='font-size: 0.8rem; font-weight: normal; color: var(--clr-text-muted);'>Jam</div></div>" +
-                    "<div>" + minutes + "<div style='font-size: 0.8rem; font-weight: normal; color: var(--clr-text-muted);'>Menit</div></div>" +
-                    "<div>" + seconds + "<div style='font-size: 0.8rem; font-weight: normal; color: var(--clr-text-muted);'>Detik</div></div>";
+                    "<div>" + days + "<div class='text-xs font-bold text-text-muted uppercase tracking-widest mt-1'>Hari</div></div>" +
+                    "<div>" + hours + "<div class='text-xs font-bold text-text-muted uppercase tracking-widest mt-1'>Jam</div></div>" +
+                    "<div>" + minutes + "<div class='text-xs font-bold text-text-muted uppercase tracking-widest mt-1'>Menit</div></div>" +
+                    "<div>" + seconds + "<div class='text-xs font-bold text-text-muted uppercase tracking-widest mt-1'>Detik</div></div>";
             }, 1000);
         </script>
         <?php else: ?>
-        <div class="lookup-card">
-            <form method="POST" action="/cek" class="lookup-form" id="lookupForm" novalidate>
+        <div class="bg-surface border border-border rounded-3xl p-8 max-w-2xl mx-auto mb-8 shadow-xl">
+            <form method="POST" action="/cek" class="flex flex-col gap-4" id="lookupForm" novalidate>
                 <?= csrf_field() ?>
-                <div class="input-group">
-                    <span class="input-prefix">🔍</span>
-                    <input
-                        type="text"
-                        id="nisn"
-                        name="nisn"
-                        class="lookup-input"
-                        placeholder="Masukkan NISN (10 digit)"
-                        value="<?= e($nisn ?? '') ?>"
-                        maxlength="10"
-                        inputmode="numeric"
-                        pattern="\d{10}"
-                        required
-                        autocomplete="off"
-                    >
-                    <button type="submit" class="lookup-btn" id="submitBtn">
+                <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 bg-bg border border-border rounded-2xl p-2 sm:pl-4 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 transition-all">
+                    <div class="flex items-center gap-3 px-4 py-2 sm:p-0 flex-1">
+                        <span class="text-xl shrink-0">🔍</span>
+                        <input
+                            type="text"
+                            id="nisn"
+                            name="nisn"
+                            class="flex-1 bg-transparent border-none outline-none text-text text-lg font-bold placeholder:text-text-muted placeholder:font-normal min-w-0 w-full"
+                            placeholder="Masukkan NISN"
+                            value="<?= e($nisn ?? '') ?>"
+                            maxlength="10"
+                            inputmode="numeric"
+                            pattern="\d{10}"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button type="submit" class="bg-primary text-white font-bold py-2 px-8 rounded-xl hover:opacity-90 transition-all shrink-0 cursor-pointer disabled:opacity-50 shadow-md shadow-primary/20" id="submitBtn">
                         <span class="btn-text">Cek Sekarang</span>
                         <span class="btn-spinner hidden" aria-hidden="true">⟳</span>
                     </button>
                 </div>
-                <p class="input-hint">Contoh: 1234567890</p>
+                <p class="text-text-muted text-sm text-left pl-4 font-medium italic">Contoh: 1234567890</p>
             </form>
         </div>
         <?php endif; ?>
@@ -80,62 +86,62 @@
                 <?php $s = $result['siswa']; ?>
                 <?php $lulus = $s['status_kelulusan'] === 'lulus'; ?>
 
-                <div class="result-card result-<?= $lulus ? 'lulus' : 'tidak-lulus' ?>" id="resultCard">
-                    <div class="result-badge">
+                <div class="max-w-2xl mx-auto rounded-3xl p-10 border bg-surface animate-slide-up shadow-2xl <?= $lulus ? 'border-success' : 'border-danger' ?>" id="resultCard">
+                    <div class="text-7xl mb-6 leading-none">
                         <?= $lulus ? '🎉' : '😔' ?>
                     </div>
-                    <div class="result-status">
+                    <div class="text-4xl font-black tracking-widest mb-2 <?= $lulus ? 'text-success' : 'text-danger' ?>">
                         <?= $lulus ? 'LULUS' : 'TIDAK LULUS' ?>
                     </div>
-                    <p class="result-message"><?= $result['message'] ?></p>
+                    <p class="text-text-muted mb-8 font-medium"><?= $result['message'] ?></p>
 
-                    <div class="result-details">
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <span class="detail-label">Nama</span>
-                                <span class="detail-value"><?= e($s['nama']) ?></span>
+                    <div class="bg-bg border border-border rounded-2xl p-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-1 text-left">
+                                <span class="text-[0.7rem] font-bold text-text-muted uppercase tracking-widest">Nama Lengkap</span>
+                                <span class="font-extrabold text-lg"><?= e($s['nama']) ?></span>
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-label">NISN</span>
-                                <span class="detail-value"><?= e($s['nisn']) ?></span>
+                            <div class="flex flex-col gap-1 text-left">
+                                <span class="text-[0.7rem] font-bold text-text-muted uppercase tracking-widest">NISN</span>
+                                <span class="font-extrabold text-lg"><?= e($s['nisn']) ?></span>
                             </div>
                             <?php if (!empty($s['jurusan']) && trim($s['jurusan']) !== '-'): ?>
-                            <div class="detail-item">
-                                <span class="detail-label">Jurusan</span>
-                                <span class="detail-value"><?= e($s['jurusan']) ?></span>
+                            <div class="flex flex-col gap-1 text-left">
+                                <span class="text-[0.7rem] font-bold text-text-muted uppercase tracking-widest">Jurusan</span>
+                                <span class="font-extrabold text-lg"><?= e($s['jurusan']) ?></span>
                             </div>
                             <?php endif; ?>
-                            <div class="detail-item">
-                                <span class="detail-label">Tahun Lulus</span>
-                                <span class="detail-value"><?= e($s['tahun_lulus']) ?></span>
+                            <div class="flex flex-col gap-1 text-left">
+                                <span class="text-[0.7rem] font-bold text-text-muted uppercase tracking-widest">Tahun Lulus</span>
+                                <span class="font-extrabold text-lg"><?= e($s['tahun_lulus']) ?></span>
                             </div>
                             <?php if ($s['nilai_rata_rata']): ?>
-                            <div class="detail-item">
-                                <span class="detail-label">Nilai Rata-rata</span>
-                                <span class="detail-value"><?= number_format((float)$s['nilai_rata_rata'], 2) ?></span>
+                            <div class="flex flex-col gap-1 text-left">
+                                <span class="text-[0.7rem] font-bold text-text-muted uppercase tracking-widest">Nilai Rata-rata</span>
+                                <span class="font-extrabold text-lg text-primary"><?= number_format((float)$s['nilai_rata_rata'], 2) ?></span>
                             </div>
                             <?php endif; ?>
                             <?php if ($s['keterangan']): ?>
-                            <div class="detail-item detail-full">
-                                <span class="detail-label">Keterangan</span>
-                                <span class="detail-value"><?= e($s['keterangan']) ?></span>
+                            <div class="flex flex-col gap-1 text-left sm:col-span-2 border-t border-border pt-4 mt-2">
+                                <span class="text-[0.7rem] font-bold text-text-muted uppercase tracking-widest">Keterangan Tambahan</span>
+                                <span class="font-medium text-sm text-text"><?= e($s['keterangan']) ?></span>
                             </div>
                             <?php endif; ?>
                         </div>
                     </div>
-                    <div class="result-actions">
-                        <a href="/cetak/<?= e($s['nisn']) ?>" target="_blank" class="btn btn-primary">
-                            🖨️ Cetak Surat Keterangan
+                    <div class="mt-10 text-center">
+                        <a href="/cetak/<?= e($s['nisn']) ?>" target="_blank" class="bg-primary text-white font-bold py-4 px-10 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all inline-flex items-center gap-3 shadow-lg shadow-primary/20">
+                            🖨️ Cetak Surat Keterangan (SKL)
                         </a>
                     </div>
                 </div>
 
             <?php else: ?>
 
-                <div class="result-card result-not-found" id="resultCard">
-                    <div class="result-badge">❓</div>
-                    <p class="result-message"><?= $result['message'] ?></p>
-                    <p class="result-hint">Pastikan NISN yang kamu masukkan sudah benar.</p>
+                <div class="max-w-2xl mx-auto rounded-3xl p-10 border bg-surface border-primary/20 shadow-xl animate-slide-up" id="resultCard">
+                    <div class="text-6xl mb-6 leading-none">❓</div>
+                    <p class="text-text-muted mb-4 font-bold"><?= $result['message'] ?></p>
+                    <p class="text-text-muted text-sm italic">Pastikan NISN yang kamu masukkan sudah benar. Hubungi pihak sekolah jika data tidak ditemukan.</p>
                 </div>
 
             <?php endif; ?>
@@ -144,23 +150,23 @@
 </section>
 
 <!-- ── Info Section ──────────────────────────────────────────────────────── -->
-<section class="info-section">
-    <div class="container">
-        <div class="info-grid">
-            <div class="info-card">
-                <div class="info-icon">🔒</div>
-                <h3>Aman & Terpercaya</h3>
-                <p>Data kelulusan bersumber langsung dari sistem administrasi sekolah.</p>
+<section class="py-20 bg-bg">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-surface border border-border rounded-3xl p-10 text-center hover:shadow-xl hover:-translate-y-2 transition-all">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-sm">🔒</div>
+                <h3 class="text-xl font-bold mb-3">Aman & Terpercaya</h3>
+                <p class="text-text-muted text-sm leading-relaxed">Data kelulusan bersumber langsung dari sistem administrasi resmi sekolah yang telah divalidasi.</p>
             </div>
-            <div class="info-card">
-                <div class="info-icon">⚡</div>
-                <h3>Cepat & Akurat</h3>
-                <p>Hasil ditampilkan secara real-time tanpa perlu menunggu lama.</p>
+            <div class="bg-surface border border-border rounded-3xl p-10 text-center hover:shadow-xl hover:-translate-y-2 transition-all">
+                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-sm">⚡</div>
+                <h3 class="text-xl font-bold mb-3">Cepat & Akurat</h3>
+                <p class="text-text-muted text-sm leading-relaxed">Hasil pencarian ditampilkan secara instan tanpa perlu memproses data yang rumit atau menunggu lama.</p>
             </div>
-            <div class="info-card">
-                <div class="info-icon">📱</div>
-                <h3>Akses Kapan Saja</h3>
-                <p>Dapat diakses dari perangkat apapun — smartphone, tablet, maupun desktop.</p>
+            <div class="bg-surface border border-border rounded-3xl p-10 text-center hover:shadow-xl hover:-translate-y-2 transition-all">
+                <div class="w-16 h-16 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-sm">📱</div>
+                <h3 class="text-xl font-bold mb-3">Akses Fleksibel</h3>
+                <p class="text-text-muted text-sm leading-relaxed">Platform didesain responsif untuk memudahkan akses dari smartphone, tablet, maupun perangkat komputer.</p>
             </div>
         </div>
     </div>

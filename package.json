@@ -1,0 +1,29 @@
+{
+  "name": "app-kelulusan",
+  "version": "1.0.0",
+  "description": "Sistem Pengecekan Kelulusan Online yang dibangun menggunakan arsitektur MVC (Model-View-Controller) dengan PHP Native yang modern, scalable, dan clean.",
+  "main": "index.js",
+  "scripts": {
+    "dev:css": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/assets/css/app.css --watch",
+    "dev:admin": "npx @tailwindcss/cli -i ./resources/css/admin.css -o ./public/assets/css/admin.css --watch",
+    "build:css": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/assets/css/app.css --minify",
+    "build:admin": "npx @tailwindcss/cli -i ./resources/css/admin.css -o ./public/assets/css/admin.css --minify",
+    "build": "npm run build:css && npm run build:admin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahfudin98/sistem-informasi-kelulusan-sekolah.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mahfudin98/sistem-informasi-kelulusan-sekolah/issues"
+  },
+  "homepage": "https://github.com/Mahfudin98/sistem-informasi-kelulusan-sekolah#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  }
+}

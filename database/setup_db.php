@@ -3,11 +3,7 @@
 declare(strict_types=1);
 
 // Database configuration. Make sure this matches your .env
-$host    = '127.0.0.1';
-$port    = '3306';
-$name    = 'app_kelulusan'; // Replace with your DB name
-$user    = 'root_ls';
-$pass    = 'password';
+require_once __DIR__ . '/bootstrap.php';
 
 try {
     $pdo = new PDO("mysql:host=$host;port=$port", $user, $pass);

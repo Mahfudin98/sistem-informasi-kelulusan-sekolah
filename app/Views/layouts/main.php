@@ -13,25 +13,28 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="<?= asset('css/app.css') ?>">
     
-    <?php if ($warnaDasar = profil_sekolah('warna_dasar')): ?>
+    <?php 
+    $warnaDasar = profil_sekolah('warna_dasar', '#6366f1');
+    $warnaTeks  = get_contrast_color($warnaDasar);
+    ?>
     <style>
         :root {
-            --clr-primary: <?= $warnaDasar ?>;
-            --clr-primary-hover: <?= $warnaDasar ?>e6; /* slight transparency */
+            --color-primary: <?= $warnaDasar ?>;
+            --color-primary-dk: <?= $warnaDasar ?>e6;
+            --color-primary-text: <?= $warnaTeks ?>;
         }
     </style>
-    <?php endif; ?>
 </head>
-<body>
+<body class="bg-bg text-text font-sans min-h-screen">
 
 <!-- ── Navigation ───────────────────────────────────────────────────────── -->
-<nav class="navbar">
-    <div class="container">
-        <a href="/" class="navbar-brand">
+<nav class="sticky top-0 z-50 backdrop-blur-xl bg-bg/80 border-b border-border py-4">
+    <div class="container mx-auto px-6 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3 text-xl font-bold text-text hover:text-primary transition-colors">
             <?php if ($logo = profil_sekolah('logo')): ?>
-                <img src="<?= url($logo) ?>" alt="Logo" style="height: 32px; width: auto; border-radius: 4px;">
+                <img src="<?= url($logo) ?>" alt="Logo" class="h-8 w-auto rounded">
             <?php else: ?>
-                <span class="brand-icon">🎓</span>
+                <span class="text-2xl">🎓</span>
             <?php endif; ?>
             <span><?= e(profil_sekolah('nama_sekolah', env('APP_NAME'))) ?></span>
         </a>
@@ -44,8 +47,8 @@
 </main>
 
 <!-- ── Footer ───────────────────────────────────────────────────────────── -->
-<footer class="footer">
-    <div class="container">
+<footer class="border-t border-border py-12 mt-16 text-center text-text-muted text-sm">
+    <div class="container mx-auto px-6">
         <p>&copy; <?= date('Y') ?> <?= e(profil_sekolah('nama_sekolah', env('APP_NAME'))) ?>. All rights reserved.</p>
     </div>
 </footer>

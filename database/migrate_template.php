@@ -1,11 +1,7 @@
 <?php
 declare(strict_types=1);
 
-$host    = '127.0.0.1';
-$port    = '3306';
-$name    = 'app_kelulusan';
-$user    = 'root_ls';
-$pass    = 'password';
+require_once __DIR__ . '/bootstrap.php';
 
 $defaultTemplate = <<<HTML
 <p style="text-indent: 30px; text-align: justify;">

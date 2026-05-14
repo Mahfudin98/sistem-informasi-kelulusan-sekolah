@@ -1,11 +1,7 @@
 <?php
 declare(strict_types=1);
 
-$host    = '127.0.0.1';
-$port    = '3306';
-$name    = 'app_kelulusan';
-$user    = 'root_ls';
-$pass    = 'password';
+require_once __DIR__ . '/bootstrap.php';
 
 $headerTemplate = <<<HTML
 <div style="text-align: center; border-bottom: 4px solid #000; padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">

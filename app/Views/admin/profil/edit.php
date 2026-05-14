@@ -2,116 +2,117 @@
 $errors = flash('errors') ?? [];
 $old    = fn(string $k) => old($k, $profil[$k] ?? '');
 $err    = fn(string $k) => $errors[$k][0] ?? null;
-$cls    = fn(string $k) => $err($k) ? 'form-input is-invalid' : 'form-input';
+$input_base = "w-full bg-white/5 border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all";
+$cls    = fn(string $k) => $err($k) ? $input_base . ' border-red-500/50 ring-4 ring-red-500/10' : $input_base;
 ?>
 
-<div class="card">
-    <div class="card-header">
-        <h2 class="card-title">🏫 Pengaturan Profil Sekolah</h2>
+<div class="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm animate-fade-in">
+    <div class="flex items-center justify-between p-6 border-b border-border">
+        <h2 class="text-lg font-bold">🏫 Pengaturan Profil Sekolah</h2>
     </div>
-    <div class="card-body">
-        <form method="POST" action="/admin/profil" enctype="multipart/form-data" novalidate>
+    <div class="p-6">
+        <form method="POST" action="/admin/profil" enctype="multipart/form-data" class="flex flex-col gap-8" novalidate>
             <?= csrf_field() ?>
 
-            <div class="form-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <!-- Nama Sekolah -->
-                <div class="form-group form-group-wide">
-                    <label class="form-label" for="nama_sekolah">Nama Sekolah <span class="required">*</span></label>
+                <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="nama_sekolah">Nama Sekolah <span class="text-red-500">*</span></label>
                     <input type="text" id="nama_sekolah" name="nama_sekolah"
                            class="<?= $cls('nama_sekolah') ?>"
                            value="<?= e($old('nama_sekolah')) ?>"
                            required>
                     <?php if ($e = $err('nama_sekolah')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Logo -->
-                <div class="form-group form-group-wide">
-                    <label class="form-label" for="logo">Logo Sekolah</label>
+                <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="logo">Logo Sekolah</label>
                     <?php if (!empty($profil['logo'])): ?>
-                        <div style="margin-bottom: 1rem;">
-                            <img src="<?= url($profil['logo']) ?>" alt="Logo Sekolah" style="max-height: 100px; border-radius: 8px;">
+                        <div class="mb-4">
+                            <img src="<?= url($profil['logo']) ?>" alt="Logo Sekolah" class="max-h-24 rounded-lg bg-white/5 p-2 border border-border">
                         </div>
                     <?php endif; ?>
                     <input type="file" id="logo" name="logo"
-                           class="<?= $cls('logo') ?>"
+                           class="<?= $cls('logo') ?> file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-primary/20 file:text-primary hover:file:bg-primary/30 file:cursor-pointer"
                            accept="image/*">
-                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah logo. Format didukung: JPG, PNG, SVG, WEBP.</small>
+                    <p class="text-[0.7rem] text-text-muted mt-1 italic pl-1">Biarkan kosong jika tidak ingin mengubah logo. Format didukung: JPG, PNG, SVG, WEBP.</p>
                     <?php if ($e = $err('logo')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Kepala Sekolah -->
-                <div class="form-group">
-                    <label class="form-label" for="kepala_sekolah">Kepala Sekolah</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="kepala_sekolah">Kepala Sekolah</label>
                     <input type="text" id="kepala_sekolah" name="kepala_sekolah"
                            class="<?= $cls('kepala_sekolah') ?>"
                            value="<?= e($old('kepala_sekolah')) ?>">
                     <?php if ($e = $err('kepala_sekolah')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- NIP Kepala Sekolah -->
-                <div class="form-group">
-                    <label class="form-label" for="nip_kepala_sekolah">NIP Kepala Sekolah</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="nip_kepala_sekolah">NIP Kepala Sekolah</label>
                     <input type="text" id="nip_kepala_sekolah" name="nip_kepala_sekolah"
                            class="<?= $cls('nip_kepala_sekolah') ?>"
                            value="<?= e($old('nip_kepala_sekolah')) ?>">
                     <?php if ($e = $err('nip_kepala_sekolah')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Email -->
-                <div class="form-group">
-                    <label class="form-label" for="email">Email</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="email">Email</label>
                     <input type="email" id="email" name="email"
                            class="<?= $cls('email') ?>"
                            value="<?= e($old('email')) ?>">
                     <?php if ($e = $err('email')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Telepon -->
-                <div class="form-group">
-                    <label class="form-label" for="telepon">Telepon / WhatsApp</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="telepon">Telepon / WhatsApp</label>
                     <input type="text" id="telepon" name="telepon"
                            class="<?= $cls('telepon') ?>"
                            value="<?= e($old('telepon')) ?>">
                     <?php if ($e = $err('telepon')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Website -->
-                <div class="form-group">
-                    <label class="form-label" for="website">Website</label>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="website">Website</label>
                     <input type="url" id="website" name="website"
                            class="<?= $cls('website') ?>"
                            value="<?= e($old('website')) ?>">
                     <?php if ($e = $err('website')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Alamat -->
-                <div class="form-group form-group-wide">
-                    <label class="form-label" for="alamat">Alamat Lengkap</label>
+                <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="alamat">Alamat Lengkap</label>
                     <textarea id="alamat" name="alamat" rows="3"
-                              class="<?= $cls('alamat') ?>"><?= e($old('alamat')) ?></textarea>
+                               class="<?= $cls('alamat') ?>"><?= e($old('alamat')) ?></textarea>
                     <?php if ($e = $err('alamat')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Waktu Pengumuman -->
-                <div class="form-group form-group-wide">
-                    <label class="form-label" for="tgl_pengumuman">Waktu Pengumuman Kelulusan</label>
+                <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="tgl_pengumuman">Waktu Pengumuman Kelulusan</label>
                     <?php
                     $rawTgl = $old('tgl_pengumuman');
                     $tglVal = $rawTgl ? date('Y-m-d\TH:i', strtotime($rawTgl)) : '';
@@ -119,57 +120,57 @@ $cls    = fn(string $k) => $err($k) ? 'form-input is-invalid' : 'form-input';
                     <input type="datetime-local" id="tgl_pengumuman" name="tgl_pengumuman"
                            class="<?= $cls('tgl_pengumuman') ?>"
                            value="<?= e($tglVal) ?>">
-                    <small class="text-muted">Kosongkan jika pengumuman sudah bisa diakses kapan saja. Jika diisi, siswa akan melihat hitung mundur (countdown) sampai waktu yang ditentukan.</small>
+                    <p class="text-[0.7rem] text-text-muted mt-1 italic pl-1">Kosongkan jika pengumuman sudah bisa diakses kapan saja. Jika diisi, siswa akan melihat hitung mundur (countdown) sampai waktu yang ditentukan.</p>
                     <?php if ($e = $err('tgl_pengumuman')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
                 <!-- Warna Dasar -->
-                <div class="form-group">
-                    <label class="form-label" for="warna_dasar">Warna Dasar Sistem (UI)</label>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="warna_dasar">Warna Dasar Sistem (UI)</label>
+                    <div class="flex items-center gap-4">
                         <input type="color" id="warna_dasar" name="warna_dasar"
-                               class="<?= $cls('warna_dasar') ?>" style="padding: 0; width: 50px; height: 50px; border: none; cursor: pointer;"
+                               class="w-12 h-12 rounded-lg bg-white/5 border border-border cursor-pointer"
                                value="<?= e($old('warna_dasar') ?: '#6366f1') ?>">
-                        <small class="text-muted">Pilih warna dasar aplikasi agar sesuai dengan warna ciri khas sekolah.</small>
+                        <p class="text-[0.7rem] text-text-muted italic">Pilih warna dasar aplikasi agar sesuai dengan warna ciri khas sekolah.</p>
                     </div>
                     <?php if ($e = $err('warna_dasar')): ?>
-                        <span class="form-error"><?= e($e) ?></span>
+                        <span class="text-[0.7rem] text-red-300 pl-1"><?= e($e) ?></span>
                     <?php endif; ?>
                 </div>
 
-                <hr style="border: 0; border-top: 1px solid var(--clr-border); margin: 2rem 0;">
-                <h3 style="grid-column: 1 / -1; margin-bottom: 0;">Pengaturan Template SKL</h3>
+                <div class="md:col-span-2 h-px bg-border my-4"></div>
+                <h3 class="md:col-span-2 text-lg font-bold">Pengaturan Template SKL</h3>
 
                 <!-- Template Header -->
-                <div class="form-group form-group-wide" style="margin-top: 1rem;">
-                    <label class="form-label" for="template_header">Kop Surat (Header)</label>
-                    <small class="text-muted" style="display:block; margin-bottom:.5rem;">Gunakan tag: <code>[nama_sekolah]</code>, <code>[alamat]</code>, <code>[website]</code>, <code>[email]</code>, <code>[telepon]</code>, <code>[logo_sekolah]</code></small>
+                <div class="flex flex-col gap-1.5 md:col-span-2 mt-2">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="template_header">Kop Surat (Header)</label>
+                    <p class="text-[0.7rem] text-indigo-300 mb-2 pl-1">Tag: <code>[nama_sekolah]</code>, <code>[alamat]</code>, <code>[website]</code>, <code>[email]</code>, <code>[telepon]</code>, <code>[logo_sekolah]</code></p>
                     <textarea id="template_header" name="template_header" rows="8"
-                              class="tinymce"><?= e($old('template_header')) ?></textarea>
+                               class="tinymce"><?= e($old('template_header')) ?></textarea>
                 </div>
 
                 <!-- Template Surat -->
-                <div class="form-group form-group-wide" style="margin-top: 1rem;">
-                    <label class="form-label" for="template_surat">Isi Surat (Body)</label>
-                    <small class="text-muted" style="display:block; margin-bottom:.5rem;">Gunakan tag: <code>[nama_siswa]</code>, <code>[nisn]</code>, <code>[tempat_lahir]</code>, <code>[tanggal_lahir]</code>, <code>[jenis_kelamin]</code>, <code>[jurusan]</code>, <code>[nilai_rata_rata]</code>, <code>[status_kelulusan]</code>, <code>[tahun_pelajaran]</code>, <code>[nama_sekolah]</code></small>
+                <div class="flex flex-col gap-1.5 md:col-span-2 mt-4">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="template_surat">Isi Surat (Body)</label>
+                    <p class="text-[0.7rem] text-indigo-300 mb-2 pl-1">Tag: <code>[nama_siswa]</code>, <code>[nisn]</code>, <code>[tempat_lahir]</code>, <code>[tanggal_lahir]</code>, <code>[jenis_kelamin]</code>, <code>[jurusan]</code>, <code>[nilai_rata_rata]</code>, <code>[status_kelulusan]</code>, <code>[tahun_pelajaran]</code>, <code>[nama_sekolah]</code></p>
                     <textarea id="template_surat" name="template_surat" rows="15"
-                              class="tinymce"><?= e($old('template_surat')) ?></textarea>
+                               class="tinymce"><?= e($old('template_surat')) ?></textarea>
                 </div>
 
                 <!-- Template Footer -->
-                <div class="form-group form-group-wide" style="margin-top: 1rem;">
-                    <label class="form-label" for="template_footer">Tanda Tangan (Footer)</label>
-                    <small class="text-muted" style="display:block; margin-bottom:.5rem;">Gunakan tag: <code>[tanggal_surat]</code>, <code>[kepala_sekolah]</code>, <code>[nip_kepala_sekolah]</code></small>
+                <div class="flex flex-col gap-1.5 md:col-span-2 mt-4">
+                    <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="template_footer">Tanda Tangan (Footer)</label>
+                    <p class="text-[0.7rem] text-indigo-300 mb-2 pl-1">Tag: <code>[tanggal_surat]</code>, <code>[kepala_sekolah]</code>, <code>[nip_kepala_sekolah]</code></p>
                     <textarea id="template_footer" name="template_footer" rows="8"
-                              class="tinymce"><?= e($old('template_footer')) ?></textarea>
+                               class="tinymce"><?= e($old('template_footer')) ?></textarea>
                 </div>
 
             </div>
 
-            <div class="form-actions" style="margin-top: 1.5rem; justify-content: flex-start;">
-                <button type="submit" class="btn btn-primary">
+            <div class="mt-6">
+                <button type="submit" class="bg-primary text-white font-bold py-3 px-8 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all cursor-pointer">
                     💾 Simpan Profil Sekolah
                 </button>
             </div>
