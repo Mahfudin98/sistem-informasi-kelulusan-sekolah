@@ -28,7 +28,7 @@
     <div class="h-16 px-6 flex items-center justify-between border-b border-border">
         <div class="flex items-center gap-3">
             <?php if ($logo = profil_sekolah('logo')): ?>
-                <img src="<?= url($logo) ?>" alt="Logo" class="h-8 w-auto rounded">
+                <img src="/<?= ltrim($logo, '/') ?>" alt="Logo" class="h-8 w-auto rounded">
             <?php else: ?>
                 <span class="text-2xl">🎓</span>
             <?php endif; ?>
@@ -62,6 +62,10 @@
         <a href="/admin/audit-logs"
            class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/audit-logs') ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary' : 'text-text-muted hover:bg-white/5' ?>">
             <span class="text-xl">📜</span> Log Audit
+        </a>
+        <a href="/admin/backup"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white/5 text-text-muted">
+            <span class="text-xl">💾</span> Backup Database
         </a>
         <?php endif; ?>
     </nav>

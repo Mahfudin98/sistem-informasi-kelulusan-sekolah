@@ -8,52 +8,53 @@
         body {
             font-family: 'Times New Roman', Times, serif;
             color: #000;
-            background: #e2e8f0;
+            background: #fff;
             margin: 0;
-            padding: 2rem 0;
-            line-height: 1.5;
+            padding: 0;
+            line-height: 1.4;
         }
         .container {
             background: #fff;
-            width: 21cm;
-            min-height: 29.7cm;
-            margin: 0 auto;
-            padding: 1cm 1cm 1cm 1.5cm;
-            box-sizing: border-box;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
         .header {
-            text-align: center;
+            width: 100%;
             border-bottom: 4px solid #000;
             padding-bottom: 10px;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
         }
         .header-logo {
-            width: 100px;
+            width: 80px;
+            text-align: left;
+        }
+        .header-logo img {
+            max-width: 80px;
             height: auto;
         }
         .header-text {
-            flex: 1;
             text-align: center;
-            padding: 0 15px;
+            padding: 0 10px;
         }
         .header-title {
-            font-size: 16pt;
+            font-size: 14pt;
             font-weight: bold;
             margin: 0;
             text-transform: uppercase;
         }
         .header-subtitle {
-            font-size: 20pt;
+            font-size: 18pt;
             font-weight: bold;
-            margin: 5px 0;
+            margin: 2px 0;
             text-transform: uppercase;
         }
         .header-address {
-            font-size: 11pt;
+            font-size: 10pt;
             margin: 0;
         }
         .content {
@@ -76,63 +77,53 @@
             vertical-align: top;
         }
         .td-label {
-            width: 250px;
+            width: 200px;
         }
         .td-colon {
             width: 20px;
         }
-        .footer {
-            margin-top: 50px;
-            display: flex;
-            justify-content: flex-end;
+        .footer-table {
+            width: 100%;
+            margin-top: 30px;
         }
-        .signature {
-            text-align: center;
-            width: 300px;
+        .signature-cell {
+            width: 40%;
+            text-align: left;
+            padding-left: 50px;
         }
         .signature-date {
             margin-bottom: 5px;
-            text-align: left;
-            padding-left: 30px;
         }
         .signature-title {
-            text-align: left;
-            padding-left: 30px;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
         .signature-name {
             font-weight: bold;
             text-decoration: underline;
-            text-align: left;
-            padding-left: 30px;
         }
         .signature-nip {
             margin-top: 5px;
-            text-align: left;
-            padding-left: 30px;
         }
         @page {
             size: A4;
-            margin: 1cm 1cm 1cm 1.5cm;
-        }
-        @media print {
-            body { background: #fff; margin: 0; padding: 0; }
-            .container {
-                width: 100%;
-                min-height: auto;
-                margin: 0;
-                padding: 0;
-                box-shadow: none;
-            }
+            margin: 2cm;
         }
     </style>
 </head>
-<body onload="window.print()">
+<body>
     <div class="container">
         <?php
-        $logoUrl = !empty($profil['logo']) ? url($profil['logo']) : '';
+        $logoUrl = '';
+        $logoPath = !empty($profil['logo']) ? PUBLIC_PATH . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $profil['logo']) : '';
+        
+        if ($logoPath && file_exists($logoPath)) {
+            $type = pathinfo($logoPath, PATHINFO_EXTENSION);
+            $data = file_get_contents($logoPath);
+            $logoUrl = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        }
+
         $replacements = [
-            '[logo_sekolah]'     => e($logoUrl),
+            '[logo_sekolah]'     => $logoUrl,
             '[nama_sekolah]'     => e($profil['nama_sekolah']),
             '[alamat]'           => e($profil['alamat']),
             '[website]'          => e($profil['website'] ?: '-'),

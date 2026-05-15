@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Instalasi & Penggunaan — App Kelulusan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        code { background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 0.4rem; font-size: 0.9em; color: #e11d48; }
+        pre { background: #1e293b; color: #f8fafc; padding: 1.5rem; border-radius: 1rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: inherit; padding: 0; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 leading-relaxed">
+
+    <nav class="sticky top-0 z-50 glass border-b border-slate-200 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2 font-extrabold text-xl tracking-tight text-slate-900">
+                <span class="text-2xl">🎓</span> App Kelulusan
+            </div>
+            <div class="text-sm font-bold text-slate-500 uppercase tracking-widest">Dokumentasi v1.0</div>
+        </div>
+    </nav>
+
+    <header class="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50 border-b border-slate-200">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Panduan <span class="text-indigo-600">Instalasi</span> & Penggunaan</h1>
+            <p class="text-slate-500 text-lg md:text-xl max-w-2xl mx-auto">
+                Terima kasih telah menggunakan App Kelulusan. Ikuti panduan di bawah ini untuk memulai instalasi di server lokal maupun online.
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 max-w-4xl">
+        
+        <!-- Persyaratan -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm">1</span>
+                Persyaratan Sistem
+            </h2>
+            <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <span class="text-indigo-600 font-bold">✓</span>
+                        <div><strong>PHP 8.2 atau lebih baru:</strong> Pastikan ekstensi <code>pdo_mysql</code>, <code>gd</code>, dan <code>mbstring</code> aktif.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-indigo-600 font-bold">✓</span>
+                        <div><strong>MySQL / MariaDB:</strong> Versi 5.7 atau lebih baru.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-indigo-600 font-bold">✓</span>
+                        <div><strong>Composer:</strong> Untuk manajemen dependensi.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-indigo-600 font-bold">✓</span>
+                        <div><strong>Apache / Nginx:</strong> Pastikan <code>mod_rewrite</code> aktif untuk mendukung routing.</div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Langkah Instalasi -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm">2</span>
+                Langkah Instalasi
+            </h2>
+            
+            <div class="space-y-8">
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 text-indigo-600">Step 1: Install Dependensi</h3>
+                    <p class="mb-4 text-slate-600 text-sm">Buka terminal di folder project dan jalankan:</p>
+                    <pre><code>composer install</code></pre>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 text-indigo-600">Step 2: Konfigurasi Environment</h3>
+                    <p class="mb-4 text-slate-600 text-sm">Copy file <code>.env.example</code> menjadi <code>.env</code> dan sesuaikan data berikut:</p>
+                    <ul class="list-disc pl-5 text-sm space-y-2 text-slate-600">
+                        <li><code>DB_NAME</code>, <code>DB_USER</code>, <code>DB_PASS</code> (Kredensial database Anda).</li>
+                        <li><code>MAIL_USERNAME</code>, <code>MAIL_PASSWORD</code> (Untuk fitur lupa password).</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 text-indigo-600">Step 3: Setup Database</h3>
+                    <p class="mb-4 text-slate-600 text-sm">Jalankan script berikut untuk membuat tabel dan akun admin awal:</p>
+                    <pre><code>php database/setup_db.php</code></pre>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 text-indigo-600">Step 4: Konfigurasi Virtual Host (Produksi)</h3>
+                    <p class="mb-4 text-slate-600 text-sm">Pastikan <strong>Document Root</strong> server Anda mengarah ke folder <code>public/</code>, bukan ke folder utama project.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cara Penggunaan -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm">3</span>
+                Penggunaan Admin
+            </h2>
+            <div class="bg-indigo-900 text-white rounded-3xl p-10 shadow-xl overflow-hidden relative">
+                <div class="relative z-10">
+                    <p class="mb-8 opacity-80 leading-relaxed">
+                        Akses dashboard melalui URL <code>/login</code> dengan kredensial default:<br>
+                        <strong>Username:</strong> admin | <strong>Password:</strong> admin123
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white/10 p-6 rounded-2xl">
+                            <h4 class="font-bold mb-2">Import Data Siswa</h4>
+                            <p class="text-sm opacity-70">Gunakan fitur Import Excel. Download template yang disediakan, isi data siswa, lalu upload kembali.</p>
+                        </div>
+                        <div class="bg-white/10 p-6 rounded-2xl">
+                            <h4 class="font-bold mb-2">Atur Tanggal Pengumuman</h4>
+                            <p class="text-sm opacity-70">Pengumuman akan otomatis terkunci (hitung mundur) sebelum tanggal yang ditentukan di Profil Sekolah.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -right-10 -bottom-10 text-9xl opacity-10">🎓</div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-indigo-600">
+                ⚠️ Tips Penting
+            </h2>
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-8 text-amber-900">
+                <ul class="space-y-4 text-sm">
+                    <li><strong>Keamanan:</strong> Segera ubah password admin default dan tambahkan admin baru jika diperlukan.</li>
+                    <li><strong>Backup:</strong> Lakukan backup database secara rutin melalui menu <strong>Backup Database</strong> di dashboard superadmin.</li>
+                    <li><strong>Logo:</strong> Gunakan gambar logo sekolah dengan latar belakang transparan (PNG/SVG) untuk hasil terbaik.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-12 text-center text-slate-500 text-sm">
+        <p>© 2026 App Kelulusan. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

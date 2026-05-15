@@ -20,6 +20,7 @@ use App\Core\Router;
 $router->get('/', 'HomeController@index', name: 'home');
 $router->post('/cek', 'HomeController@cek', ['CsrfMiddleware'], 'home.cek');
 $router->get('/cetak/:nisn', 'HomeController@cetak', name: 'home.cetak');
+$router->get('/download/:nisn', 'HomeController@download', name: 'home.download');
 
 // ============================================================
 // AUTH ROUTES  (guests only)
@@ -79,5 +80,8 @@ $router->group('/admin', function (Router $r) {
 
     // Audit Logs
     $r->get('/audit-logs',                'Admin\AuditLogController@index', name: 'admin.audit_logs.index');
+
+    // Backup
+    $r->get('/backup',                    'Admin\BackupController@download', name: 'admin.backup.download');
 
 }, ['AuthMiddleware']);

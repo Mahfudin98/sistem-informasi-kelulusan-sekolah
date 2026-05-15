@@ -33,7 +33,7 @@ $cls    = fn(string $k) => $err($k) ? $input_base . ' border-red-500/50 ring-4 r
                     <label class="text-[0.75rem] font-bold text-text-muted uppercase tracking-wider pl-1" for="logo">Logo Sekolah</label>
                     <?php if (!empty($profil['logo'])): ?>
                         <div class="mb-4">
-                            <img src="<?= url($profil['logo']) ?>" alt="Logo Sekolah" class="max-h-24 rounded-lg bg-white/5 p-2 border border-border">
+                            <img src="/<?= ltrim($profil['logo'], '/') ?>" alt="Logo Sekolah" class="max-h-24 rounded-lg bg-white/5 p-2 border border-border">
                         </div>
                     <?php endif; ?>
                     <input type="file" id="logo" name="logo"
@@ -167,6 +167,20 @@ $cls    = fn(string $k) => $err($k) ? $input_base . ' border-red-500/50 ring-4 r
                                class="tinymce"><?= e($old('template_footer')) ?></textarea>
                 </div>
 
+                <div class="md:col-span-2 h-px bg-border my-4"></div>
+                
+                <!-- Live Preview Section -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold">👀 Live Preview (SKL)</h3>
+                        <span class="text-[0.6rem] bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded uppercase font-black">Pratinjau Hasil Akhir</span>
+                    </div>
+                    <div class="bg-white p-8 border border-border rounded-2xl shadow-inner min-h-[400px] overflow-auto scale-90 origin-top" id="sklPreview">
+                        <!-- Preview injected here -->
+                        <div class="text-slate-400 text-center py-20 italic">Sedang memuat pratinjau...</div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="mt-6">
@@ -187,6 +201,66 @@ $cls    = fn(string $k) => $err($k) ? $input_base . ' border-red-500/50 ring-4 r
         menubar: false,
         branding: false,
         promotion: false,
-        content_style: "body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; }"
+        content_style: "body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; }",
+        setup: function (editor) {
+            editor.on('change keyup', function () {
+                updatePreview();
+            });
+        }
+    });
+
+    const logoUrl = '<?= !empty($profil["logo"]) ? "/" . ltrim($profil["logo"], "/") : "" ?>';
+    const previewEl = document.getElementById('sklPreview');
+
+    function updatePreview() {
+        let header = tinymce.get('template_header') ? tinymce.get('template_header').getContent() : '';
+        let body = tinymce.get('template_surat') ? tinymce.get('template_surat').getContent() : '';
+        let footer = tinymce.get('template_footer') ? tinymce.get('template_footer').getContent() : '';
+        
+        let namaSekolah = document.getElementById('nama_sekolah').value;
+        let alamat = document.getElementById('alamat').value;
+        let website = document.getElementById('website').value;
+        let email = document.getElementById('email').value;
+        let telepon = document.getElementById('telepon').value;
+
+        let html = header + '<div style="margin: 20px 0;">' + body + '</div>' + footer;
+
+        // Replace tags
+        const now = new Date();
+        const year = now.getFullYear();
+        
+        const replacements = {
+            '\\[logo_sekolah\\]': logoUrl,
+            '\\[nama_sekolah\\]': namaSekolah,
+            '\\[alamat\\]': alamat,
+            '\\[website\\]': website,
+            '\\[email\\]': email,
+            '\\[telepon\\]': telepon,
+            '\\[tahun_pelajaran\\]': (year - 1) + '/' + year,
+            '\\[nama_siswa\\]': 'NAMA SISWA CONTOH',
+            '\\[nisn\\]': '1234567890',
+            '\\[tempat_lahir\\]': 'Jakarta',
+            '\\[tanggal_lahir\\]': '01 Januari 2005',
+            '\\[status_kelulusan\\]': 'L U L U S',
+            '\\[nilai_rata_rata\\]': '85.50',
+            '\\[tanggal_surat\\]': '01 Juni ' + year,
+            '\\[kepala_sekolah\\]': document.getElementById('kepala_sekolah').value || '________________',
+            '\\[nip_kepala_sekolah\\]': document.getElementById('nip_kepala_sekolah').value || '________________'
+        };
+
+        for (let key in replacements) {
+            let re = new RegExp(key, 'g');
+            html = html.replace(re, replacements[key]);
+        }
+
+        previewEl.innerHTML = html;
+    }
+
+    // Initial preview
+    setTimeout(updatePreview, 1000);
+
+    // Update on input change
+    document.querySelectorAll('input, textarea').forEach(el => {
+        el.addEventListener('input', updatePreview);
     });
 </script>

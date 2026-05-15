@@ -129,9 +129,12 @@
                             <?php endif; ?>
                         </div>
                     </div>
-                    <div class="mt-10 text-center">
-                        <a href="/cetak/<?= e($s['nisn']) ?>" target="_blank" class="bg-primary text-white font-bold py-4 px-10 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all inline-flex items-center gap-3 shadow-lg shadow-primary/20">
-                            🖨️ Cetak Surat Keterangan (SKL)
+                    <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="/cetak/<?= e($s['nisn']) ?>" target="_blank" class="bg-surface border border-primary text-primary font-bold py-4 px-8 rounded-xl hover:bg-primary/5 transition-all inline-flex items-center justify-center gap-3 shadow-sm">
+                            🖨️ Cetak Surat
+                        </a>
+                        <a href="/download/<?= e($s['nisn']) ?>" class="bg-primary text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all inline-flex items-center justify-center gap-3 shadow-lg shadow-primary/20">
+                            📄 Download PDF
                         </a>
                     </div>
                 </div>

@@ -74,4 +74,29 @@ final class HomeController extends BaseController
             'profil' => $profil,
         ], null);
     }
+
+    /**
+     * GET /download/:nisn — Download SKL sebagai PDF
+     */
+    public function download(Request $request, array $params): void
+    {
+        $nisn = $params['nisn'];
+        $profil = profil_sekolah();
+        if (!empty($profil['tgl_pengumuman']) && strtotime($profil['tgl_pengumuman']) > time()) {
+            abort(403, 'Pengumuman belum dibuka.');
+        }
+
+        $result = $this->service->cekKelulusan($nisn);
+        if (!$result['found']) {
+            abort(404, 'Data tidak ditemukan.');
+        }
+
+        $html = \App\Core\View::make('home.cetak', [
+            'title'  => 'SKL — ' . $result['siswa']['nama'],
+            'siswa'  => $result['siswa'],
+            'profil' => $profil,
+        ]);
+
+        \App\Services\PDFService::generate($html, "SKL_{$nisn}.pdf");
+    }
 }
