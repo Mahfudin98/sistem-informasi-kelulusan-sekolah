@@ -21,6 +21,7 @@ $router->get('/', 'HomeController@index', name: 'home');
 $router->post('/cek', 'HomeController@cek', ['CsrfMiddleware'], 'home.cek');
 $router->get('/cetak/:nisn', 'HomeController@cetak', name: 'home.cetak');
 $router->get('/download/:nisn', 'HomeController@download', name: 'home.download');
+$router->get('/verifikasi/:nisn', 'HomeController@verifikasi', name: 'home.verifikasi');
 
 // ============================================================
 // AUTH ROUTES  (guests only)
@@ -58,6 +59,7 @@ $router->group('/admin', function (Router $r) {
     $r->get('/siswa/import',           'Admin\SiswaController@import',  name: 'admin.siswa.import');
     $r->post('/siswa/import',          'Admin\SiswaController@processImport', ['CsrfMiddleware'], 'admin.siswa.process_import');
     $r->get('/siswa/template',         'Admin\SiswaController@downloadTemplate', name: 'admin.siswa.template');
+    $r->get('/siswa/export',           'Admin\SiswaController@export',  name: 'admin.siswa.export');
     
     $r->post('/siswa',                 'Admin\SiswaController@store',   ['CsrfMiddleware'], 'admin.siswa.store');
     $r->get('/siswa/:id',              'Admin\SiswaController@show',    name: 'admin.siswa.show');
@@ -65,6 +67,7 @@ $router->group('/admin', function (Router $r) {
     $r->post('/siswa/:id/update',      'Admin\SiswaController@update',  ['CsrfMiddleware'], 'admin.siswa.update');
     $r->post('/siswa/:id/delete',      'Admin\SiswaController@destroy', ['CsrfMiddleware'], 'admin.siswa.destroy');
     $r->post('/siswa/bulk-update',     'Admin\SiswaController@bulkUpdate', ['CsrfMiddleware'], 'admin.siswa.bulk_update');
+    $r->post('/siswa/bulk-delete',     'Admin\SiswaController@bulkDelete', ['CsrfMiddleware'], 'admin.siswa.bulk_delete');
 
     // Admin Management
     $r->get('/users',                  'Admin\UserController@index',    name: 'admin.user.index');

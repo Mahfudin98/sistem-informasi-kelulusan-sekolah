@@ -97,6 +97,25 @@ final class HomeController extends BaseController
             'profil' => $profil,
         ]);
 
-        \App\Services\PDFService::generate($html, "SKL_{$nisn}.pdf");
+        \App\Services\PDFService::generate($html, "SKL_{$result['siswa']['nisn']}.pdf");
+    }
+
+    /**
+     * GET /verifikasi/:nisn
+     */
+    public function verifikasi(Request $request, array $params): void
+    {
+        $nisn   = $params['nisn'];
+        $result = $this->service->cekKelulusan($nisn);
+
+        if (!$result['found']) {
+            $this->abort(404, 'Data tidak ditemukan.');
+        }
+
+        $this->view('home.verifikasi', [
+            'title' => 'Verifikasi SKL — ' . $result['siswa']['nama'],
+            'siswa' => $result['siswa'],
+            'profil' => profil_sekolah(),
+        ], 'layouts/app');
     }
 }

@@ -131,15 +131,29 @@ final class SiswaController extends BaseController
              ->redirect('/admin/siswa');
     }
 
-    /**
-     * POST /admin/siswa/bulk-update
-     */
     public function bulkUpdate(Request $request): void
     {
         $ids    = (array) ($request->body['ids'] ?? []);
         $status = (string) ($request->body['status'] ?? '');
 
         $result = $this->service->bulkUpdateStatus($ids, $status);
+
+        if (!$result['success']) {
+            $this->withError($result['message'])->redirect('/admin/siswa');
+            return;
+        }
+
+        $this->withSuccess($result['message'])->redirect('/admin/siswa');
+    }
+
+    /**
+     * POST /admin/siswa/bulk-delete
+     */
+    public function bulkDelete(Request $request): void
+    {
+        $ids = (array) ($request->body['ids'] ?? []);
+
+        $result = $this->service->bulkDelete($ids);
 
         if (!$result['success']) {
             $this->withError($result['message'])->redirect('/admin/siswa');
@@ -209,6 +223,21 @@ final class SiswaController extends BaseController
     public function downloadTemplate(Request $request): void
     {
         $this->service->downloadExcelTemplate();
+        exit;
+    }
+
+    /**
+     * GET /admin/siswa/export
+     */
+    public function export(Request $request): void
+    {
+        $search  = $request->query('search', '');
+        $tahun   = $request->query('tahun') ? (int) $request->query('tahun') : null;
+        $status  = $request->query('status') ?: null;
+        $sort    = $request->query('sort', 'nama');
+        $order   = $request->query('order', 'ASC');
+
+        $this->service->exportExcel($search, $tahun, $status, $sort, $order);
         exit;
     }
 

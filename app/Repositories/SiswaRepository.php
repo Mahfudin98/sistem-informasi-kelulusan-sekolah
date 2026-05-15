@@ -91,6 +91,49 @@ final class SiswaRepository extends BaseRepository
     }
 
     /**
+     * Get all filtered records without pagination (for export).
+     */
+    public function getFilteredAll(
+        string  $search  = '',
+        ?int    $tahun   = null,
+        ?string $status  = null,
+        string  $sort    = 'nama',
+        string  $order   = 'ASC'
+    ): array {
+        $conditions = ['1=1'];
+        $bindings   = [];
+
+        if ($search !== '') {
+            $conditions[] = "(nisn LIKE :search1 OR nama LIKE :search2)";
+            $bindings['search1'] = "%{$search}%";
+            $bindings['search2'] = "%{$search}%";
+        }
+
+        if ($tahun !== null) {
+            $conditions[]       = "tahun_lulus = :tahun";
+            $bindings['tahun']  = $tahun;
+        }
+
+        if ($status !== null) {
+            $conditions[]        = "status_kelulusan = :status";
+            $bindings['status']  = $status;
+        }
+
+        $where  = implode(' AND ', $conditions);
+
+        $allowedSort = ['nama', 'nisn', 'tahun_lulus', 'jurusan', 'status_kelulusan', 'nilai_rata_rata'];
+        $sortColumn  = in_array($sort, $allowedSort) ? $sort : 'nama';
+        $sortOrder   = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+
+        return $this->db->fetchAll(
+            "SELECT * FROM {$this->table}
+              WHERE {$where}
+           ORDER BY {$sortColumn} {$sortOrder}",
+            $bindings,
+        );
+    }
+
+    /**
      * Aggregate statistics grouped by graduation year.
      */
     public function statistik(?int $tahun = null): array
@@ -138,5 +181,22 @@ final class SiswaRepository extends BaseRepository
         $sql = "UPDATE {$this->table} SET status_kelulusan = ? WHERE id IN ($placeholders)";
         
         return $this->db->query($sql, array_merge([$status], $ids))->rowCount();
+    }
+
+    /**
+     * Bulk delete students.
+     *
+     * @param int[] $ids
+     */
+    public function bulkDelete(array $ids): int
+    {
+        if (empty($ids)) {
+            return 0;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "DELETE FROM {$this->table} WHERE id IN ($placeholders)";
+        
+        return $this->db->query($sql, $ids)->rowCount();
     }
 }

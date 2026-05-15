@@ -159,7 +159,7 @@ final class KelulusanService
     public function bulkUpdateStatus(array $ids, string $status): array
     {
         if (empty($ids)) {
-            return ['success' => false, 'message' => 'Tidak ada siswa yang dipilih.'];
+            return ['success' => false, 'message' => 'Pilih data siswa terlebih dahulu.'];
         }
 
         if (!in_array($status, ['lulus', 'tidak_lulus'])) {
@@ -167,13 +167,23 @@ final class KelulusanService
         }
 
         $count = $this->repo->bulkUpdateStatus($ids, $status);
+        
+        AuditService::log('bulk_update', 'siswa', 0, "Update status massal untuk " . count($ids) . " siswa");
 
-        AuditService::log('bulk_update', 'siswa', null, "Update massal status menjadi '{$status}' untuk " . count($ids) . " siswa.");
+        return ['success' => true, 'message' => "Berhasil memperbarui {$count} data siswa."];
+    }
 
-        return [
-            'success' => true,
-            'message' => "Berhasil memperbarui status {$count} siswa.",
-        ];
+    public function bulkDelete(array $ids): array
+    {
+        if (empty($ids)) {
+            return ['success' => false, 'message' => 'Pilih data siswa terlebih dahulu.'];
+        }
+
+        $count = $this->repo->bulkDelete($ids);
+        
+        AuditService::log('bulk_delete', 'siswa', 0, "Hapus massal " . count($ids) . " siswa");
+
+        return ['success' => true, 'message' => "Berhasil menghapus {$count} data siswa."];
     }
 
     // ── Bulk Excel ────────────────────────────────────────────────────────────
@@ -272,67 +282,94 @@ final class KelulusanService
         }
     }
 
-    /**
-     * Generate and download an Excel template for student bulk import.
-     */
     public function downloadExcelTemplate(): void
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Data Siswa');
 
-        // Set Headers
-        $headers = [
-            'NISN', 'Nama Lengkap', 'Tempat Lahir', 'Tanggal Lahir (YYYY-MM-DD)', 
-            'Jenis Kelamin (L/P)', 'Jurusan', 'Tahun Lulus', 
-            'Status (lulus/tidak_lulus)', 'Nilai Rata-rata', 'Keterangan (Opsional)'
-        ];
-
-        $col = 'A';
-        foreach ($headers as $header) {
-            $sheet->setCellValue($col . '1', $header);
-            // Make header bold
-            $sheet->getStyle($col . '1')->getFont()->setBold(true);
-            // Auto size columns
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-            $col++;
+        // Headers
+        $headers = ['NISN', 'Nama Lengkap', 'Tempat Lahir', 'Tanggal Lahir (YYYY-MM-DD)', 'L/P', 'Jurusan', 'Tahun Lulus', 'lulus/tidak_lulus', 'Nilai Rata-rata', 'Keterangan'];
+        foreach ($headers as $i => $h) {
+            $sheet->setCellValueByColumnAndRow($i + 1, 1, $h);
         }
 
-        // Add dummy data row
+        // Add one example row
         $sheet->setCellValue('A2', '1234567890');
-        $sheet->setCellValue('B2', 'Budi Santoso');
+        $sheet->setCellValue('B2', 'Siswa Contoh');
         $sheet->setCellValue('C2', 'Jakarta');
-        $sheet->setCellValue('D2', '2005-08-15');
+        $sheet->setCellValue('D2', '2005-01-01');
         $sheet->setCellValue('E2', 'L');
         $sheet->setCellValue('F2', 'IPA');
         $sheet->setCellValue('G2', date('Y'));
         $sheet->setCellValue('H2', 'lulus');
-        $sheet->setCellValue('I2', '85.5');
-        $sheet->setCellValue('J2', 'Lulus dengan baik');
-
-        // Output to browser
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Template_Import_Siswa.xlsx"');
-        header('Cache-Control: max-age=0');
+        $sheet->setCellValue('I2', '85.50');
+        $sheet->setCellValue('J2', 'Contoh keterangan');
 
         $writer = new Xlsx($spreadsheet);
+        
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="template_siswa.xlsx"');
         $writer->save('php://output');
-        exit;
+    }
+
+    public function exportExcel(string $search = '', ?int $tahun = null, ?string $status = null, string $sort = 'nama', string $order = 'ASC'): void
+    {
+        $data = $this->repo->getFilteredAll($search, $tahun, $status, $sort, $order);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Data Siswa');
+
+        // Headers
+        $headers = ['NISN', 'Nama Lengkap', 'Tempat Lahir', 'Tanggal Lahir', 'L/P', 'Jurusan', 'Tahun Lulus', 'Status', 'Nilai', 'Keterangan'];
+        foreach ($headers as $i => $h) {
+            $sheet->setCellValueByColumnAndRow($i + 1, 1, $h);
+            $sheet->getStyleByColumnAndRow($i + 1, 1)->getFont()->setBold(true);
+        }
+
+        $rowIdx = 2;
+        foreach ($data as $row) {
+            $sheet->setCellValue('A' . $rowIdx, $row['nisn']);
+            $sheet->setCellValue('B' . $rowIdx, $row['nama']);
+            $sheet->setCellValue('C' . $rowIdx, $row['tempat_lahir']);
+            $sheet->setCellValue('D' . $rowIdx, $row['tanggal_lahir']);
+            $sheet->setCellValue('E' . $rowIdx, $row['jenis_kelamin']);
+            $sheet->setCellValue('F' . $rowIdx, $row['jurusan']);
+            $sheet->setCellValue('G' . $rowIdx, $row['tahun_lulus']);
+            $sheet->setCellValue('H' . $rowIdx, ucfirst($row['status_kelulusan']));
+            $sheet->setCellValue('I' . $rowIdx, $row['nilai_rata_rata']);
+            $sheet->setCellValue('J' . $rowIdx, $row['keterangan']);
+            $rowIdx++;
+        }
+
+        foreach (range('A', 'J') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        
+        $filename = 'Data_Siswa_' . date('Y-m-d_His') . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        $writer->save('php://output');
     }
 
     // ── Internals ─────────────────────────────────────────────────────────────
 
-    private function validateSiswa(array $data, ?int $excludeId = null): \App\Validation\Validator
+    private function validateSiswa(array $data, ?int $id = null): Validator
     {
         return Validator::make($data, [
-            'nisn'              => 'required|numeric|length:10',
-            'nama'              => 'required|min:3|max:150',
-            'tempat_lahir'      => 'required|min:2|max:100',
-            'tanggal_lahir'     => 'required|date',
-            'jenis_kelamin'     => 'required|in:L,P',
-            'jurusan'           => 'max:100',
-            'tahun_lulus'       => 'required|integer',
-            'status_kelulusan'  => 'required|in:lulus,tidak_lulus',
-            'nilai_rata_rata'   => 'required|numeric',
+            'nisn'             => 'required|exact_length:10|numeric' . ($id ? '' : '|unique:siswa,nisn'),
+            'nama'             => 'required|min:3|max:150',
+            'tempat_lahir'     => 'required|max:100',
+            'tanggal_lahir'    => 'required|date',
+            'jenis_kelamin'    => 'required|in:L,P',
+            'jurusan'          => 'max:100',
+            'tahun_lulus'      => 'required|numeric',
+            'status_kelulusan' => 'required|in:lulus,tidak_lulus',
+            'nilai_rata_rata'  => 'numeric',
+            'keterangan'       => '',
         ]);
     }
 

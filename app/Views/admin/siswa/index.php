@@ -15,6 +15,7 @@ function sort_icon($col, $currentSort, $currentOrder) {
     <div class="flex items-center justify-between p-6 border-b border-border flex-wrap gap-4">
         <h2 class="text-lg font-bold">👥 Data Siswa</h2>
         <div class="flex gap-2">
+            <a href="/admin/siswa/export?<?= http_build_query($_GET) ?>" class="bg-emerald-50 text-emerald-700 border border-emerald-100 text-sm font-bold py-2 px-4 rounded-lg hover:bg-emerald-100 transition-all flex items-center gap-2">💹 Export Excel</a>
             <a href="/admin/siswa/import" class="bg-white border border-border text-text text-sm font-bold py-2 px-4 rounded-lg hover:bg-slate-50 transition-all flex items-center gap-2">📥 Import</a>
             <a href="/admin/siswa/create" class="bg-primary text-white text-sm font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-all shadow-md shadow-primary/10">+ Tambah</a>
         </div>
@@ -70,6 +71,8 @@ function sort_icon($col, $currentSort, $currentOrder) {
             <div class="flex gap-2">
                 <button type="button" onclick="submitBulk('lulus')" class="bg-emerald-500 text-white text-[0.7rem] font-black uppercase tracking-wider py-2 px-4 rounded-lg hover:bg-emerald-600 transition-all cursor-pointer">Lulus</button>
                 <button type="button" onclick="submitBulk('tidak_lulus')" class="bg-rose-500 text-white text-[0.7rem] font-black uppercase tracking-wider py-2 px-4 rounded-lg hover:bg-rose-600 transition-all cursor-pointer">Tidak Lulus</button>
+                <div class="h-8 w-px bg-primary/20 mx-1"></div>
+                <button type="button" onclick="submitBulkDelete()" class="bg-white border border-rose-200 text-rose-600 text-[0.7rem] font-black uppercase tracking-wider py-2 px-4 rounded-lg hover:bg-rose-50 transition-all cursor-pointer">Hapus Terpilih</button>
                 <button type="button" onclick="resetSelection()" class="text-[0.7rem] font-bold text-text-muted hover:text-text px-2 transition-all cursor-pointer">Batal</button>
             </div>
         </div>
@@ -221,7 +224,16 @@ function sort_icon($col, $currentSort, $currentOrder) {
 
     function submitBulk(status) {
         if (confirm(`Ubah status ${document.querySelectorAll('.siswa-checkbox:checked').length} siswa menjadi ${status.replace('_', ' ')}?`)) {
+            bulkForm.action = '/admin/siswa/bulk-update';
             bulkStatusInput.value = status;
+            bulkForm.submit();
+        }
+    }
+
+    function submitBulkDelete() {
+        const count = document.querySelectorAll('.siswa-checkbox:checked').length;
+        if (confirm(`⚠️ PERINGATAN: Anda akan menghapus ${count} data siswa secara permanen. Tindakan ini tidak dapat dibatalkan. Lanjutkan?`)) {
+            bulkForm.action = '/admin/siswa/bulk-delete';
             bulkForm.submit();
         }
     }

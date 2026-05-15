@@ -122,6 +122,9 @@
             $logoUrl = 'data:image/' . $type . ';base64,' . base64_encode($data);
         }
 
+        $verifyUrl = url('/verifikasi/' . $siswa['nisn']);
+        $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" . urlencode($verifyUrl);
+
         $replacements = [
             '[logo_sekolah]'     => $logoUrl,
             '[nama_sekolah]'     => e($profil['nama_sekolah']),
@@ -129,18 +132,19 @@
             '[website]'          => e($profil['website'] ?: '-'),
             '[email]'            => e($profil['email'] ?: '-'),
             '[telepon]'          => e($profil['telepon'] ?: '-'),
-            '[tahun_pelajaran]'  => e($siswa['tahun_lulus'] - 1) . '/' . e($siswa['tahun_lulus']),
-            '[nama_siswa]'       => e($siswa['nama']),
-            '[tempat_lahir]'     => e($siswa['tempat_lahir']),
-            '[tanggal_lahir]'    => format_date($siswa['tanggal_lahir']),
+            '[nama_siswa]'       => '<strong>' . e($siswa['nama']) . '</strong>',
             '[nisn]'             => e($siswa['nisn']),
-            '[jenis_kelamin]'    => e($siswa['jenis_kelamin'] === 'L' ? 'Laki-laki' : 'Perempuan'),
-            '[jurusan]'          => e($siswa['jurusan']),
-            '[status_kelulusan]' => $siswa['status_kelulusan'] === 'lulus' ? 'L U L U S' : 'T I D A K  L U L U S',
-            '[nilai_rata_rata]'  => !empty($siswa['nilai_rata_rata']) ? number_format((float)$siswa['nilai_rata_rata'], 2) : '-',
-            '[tanggal_surat]'    => format_date(date('Y-m-d')),
-            '[kepala_sekolah]'   => e($profil['kepala_sekolah'] ?: '________________________'),
-            '[nip_kepala_sekolah]'=> e($profil['nip_kepala_sekolah'] ?: '________________________'),
+            '[tempat_lahir]'     => e($siswa['tempat_lahir']),
+            '[tanggal_lahir]'    => e(date('d F Y', strtotime($siswa['tanggal_lahir']))),
+            '[jenis_kelamin]'    => $siswa['jenis_kelamin'] === 'L' ? 'Laki-laki' : 'Perempuan',
+            '[jurusan]'          => e($siswa['jurusan'] ?: '-'),
+            '[tahun_pelajaran]'  => ($siswa['tahun_lulus'] - 1) . '/' . $siswa['tahun_lulus'],
+            '[status_kelulusan]' => $siswa['status_kelulusan'] === 'lulus' ? 'L U L U S' : 'TIDAK LULUS',
+            '[nilai_rata_rata]'  => number_format((float)$siswa['nilai_rata_rata'], 2),
+            '[tanggal_surat]'    => e(date('d F Y')),
+            '[kepala_sekolah]'   => e($profil['kepala_sekolah'] ?: '________________'),
+            '[nip_kepala_sekolah]'=> e($profil['nip_kepala_sekolah'] ?: '________________'),
+            '[qr_code]'          => '<img src="' . $qrCodeUrl . '" alt="QR Code" style="width: 80px; height: 80px;">',
         ];
         
         $header = $profil['template_header'] ?? '';
