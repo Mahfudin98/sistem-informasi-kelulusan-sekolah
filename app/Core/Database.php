@@ -144,12 +144,12 @@ final class Database
 
     private function connect(): void
     {
-        $host    = $_ENV['DB_HOST']    ?? '127.0.0.1';
-        $port    = $_ENV['DB_PORT']    ?? '3306';
-        $name    = $_ENV['DB_NAME']    ?? '';
-        $user    = $_ENV['DB_USER']    ?? 'root';
-        $pass    = $_ENV['DB_PASS']    ?? '';
-        $charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
+        $host    = env('DB_HOST', '127.0.0.1');
+        $port    = env('DB_PORT', '3306');
+        $name    = env('DB_NAME', '');
+        $user    = env('DB_USER', 'root');
+        $pass    = env('DB_PASS', '');
+        $charset = env('DB_CHARSET', 'utf8mb4');
 
         $dsn = "mysql:host={$host};port={$port};dbname={$name};charset={$charset}";
 

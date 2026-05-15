@@ -30,6 +30,12 @@ $router->group('/login', function (Router $r) {
     $r->post('', 'AuthController@login',     ['GuestMiddleware', 'CsrfMiddleware']);
 });
 
+// Password Reset
+$router->get('/forgot-password',        'Auth\ForgotPasswordController@showLinkRequestForm', ['GuestMiddleware'], 'password.request');
+$router->post('/forgot-password',       'Auth\ForgotPasswordController@sendResetLinkEmail', ['GuestMiddleware', 'CsrfMiddleware']);
+$router->get('/reset-password/:token',  'Auth\ResetPasswordController@showResetForm', ['GuestMiddleware'], 'password.reset');
+$router->post('/reset-password',        'Auth\ResetPasswordController@reset', ['GuestMiddleware', 'CsrfMiddleware'], 'password.update');
+
 $router->post('/logout', 'AuthController@logout', ['AuthMiddleware', 'CsrfMiddleware'], 'logout');
 
 // ============================================================
@@ -51,6 +57,7 @@ $router->group('/admin', function (Router $r) {
     $r->get('/siswa/import',           'Admin\SiswaController@import',  name: 'admin.siswa.import');
     $r->post('/siswa/import',          'Admin\SiswaController@processImport', ['CsrfMiddleware'], 'admin.siswa.process_import');
     $r->get('/siswa/template',         'Admin\SiswaController@downloadTemplate', name: 'admin.siswa.template');
+    
     $r->post('/siswa',                 'Admin\SiswaController@store',   ['CsrfMiddleware'], 'admin.siswa.store');
     $r->get('/siswa/:id',              'Admin\SiswaController@show',    name: 'admin.siswa.show');
     $r->get('/siswa/:id/edit',         'Admin\SiswaController@edit',    name: 'admin.siswa.edit');

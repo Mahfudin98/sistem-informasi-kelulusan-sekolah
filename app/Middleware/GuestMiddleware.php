@@ -19,7 +19,7 @@ final class GuestMiddleware implements MiddlewareInterface
     public function handle(Request $request, callable $next): void
     {
         if (Session::has('user')) {
-            Response::redirect('/dashboard');
+            Response::redirect('/admin/dashboard');
         }
 
         $next($request);

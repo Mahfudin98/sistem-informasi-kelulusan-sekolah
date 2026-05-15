@@ -83,6 +83,14 @@ final class AuthService
     }
 
     /**
+     * Check whether the user is a guest (not authenticated).
+     */
+    public function guest(): bool
+    {
+        return !$this->check();
+    }
+
+    /**
      * Get current user ID.
      */
     public function id(): ?int

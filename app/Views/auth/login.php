@@ -49,6 +49,9 @@
                         👁
                     </button>
                 </div>
+                <div class="flex justify-end pr-1">
+                    <a href="/forgot-password" class="text-[0.7rem] text-primary font-bold hover:underline">Lupa Password?</a>
+                </div>
             </div>
 
             <button type="submit" class="bg-primary text-white font-bold py-3 px-6 rounded-xl hover:opacity-90 hover:-translate-y-0.5 transition-all mt-4 cursor-pointer shadow-md">

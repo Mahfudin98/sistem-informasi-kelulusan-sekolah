@@ -44,6 +44,24 @@ Sistem Pengecekan Kelulusan Online yang dibangun menggunakan arsitektur MVC (Mod
 - **URL:** `http://localhost:8000/login`
 - **Username:** `admin`
 - **Password:** `admin123`
+- **Catatan:** Segera ubah password setelah login pertama kali untuk keamanan.
+
+## Pengujian (Testing)
+
+Aplikasi ini menggunakan **Pest Framework** untuk pengujian otomatis.
+
+1. **Persiapan Database Testing (Opsional tapi Disarankan):**
+   - Buat database baru bernama `nama_database_test` (sesuai nama di `.env` ditambah suffix `_test`).
+   - Aktifkan konfigurasi database test di `tests/bootstrap.php`.
+
+2. **Menjalankan Tes:**
+   ```bash
+   composer test
+   ```
+
+3. **Struktur Tes:**
+   - `tests/Unit`: Berisi pengujian unit untuk service dan logika bisnis murni.
+   - `tests/Feature`: Berisi pengujian fitur untuk alur proses (seperti login, CRUD, dll).
 
 ## Struktur Direktori
 
