@@ -85,6 +85,7 @@ $router->group('/admin', function (Router $r) {
     $r->get('/audit-logs',                'Admin\AuditLogController@index', name: 'admin.audit_logs.index');
 
     // Backup
-    $r->get('/backup',                    'Admin\BackupController@download', name: 'admin.backup.download');
+    $r->get('/backup',                    'Admin\BackupController@index',    name: 'admin.backup.index');
+    $r->post('/backup/download',          'Admin\BackupController@download', ['CsrfMiddleware'], 'admin.backup.download');
 
 }, ['AuthMiddleware']);

@@ -13,24 +13,25 @@ use PDO;
 final class BackupService
 {
     /**
-     * Export the entire database as a SQL string.
+     * Export selected tables with optional filters.
      */
-    public static function export(): string
+    public static function export(array $selectedTables = [], array $filters = []): string
     {
         $db = Database::getInstance();
         $pdo = $db->getPdo();
-        $tables = [];
         
-        $result = $pdo->query("SHOW TABLES");
-        while ($row = $result->fetch(PDO::FETCH_NUM)) {
-            $tables[] = $row[0];
+        if (empty($selectedTables)) {
+            $result = $pdo->query("SHOW TABLES");
+            while ($row = $result->fetch(PDO::FETCH_NUM)) {
+                $selectedTables[] = $row[0];
+            }
         }
 
         $output = "-- Database Backup\n";
         $output .= "-- Generated on: " . date('Y-m-d H:i:s') . "\n\n";
         $output .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
 
-        foreach ($tables as $table) {
+        foreach ($selectedTables as $table) {
             // Drop table
             $output .= "DROP TABLE IF EXISTS `{$table}`;\n";
             
@@ -40,8 +41,19 @@ final class BackupService
             $output .= $row[1] . ";\n\n";
 
             // Data
-            $res = $pdo->query("SELECT * FROM `{$table}`");
-            while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+            $query = "SELECT * FROM `{$table}`";
+            $bindings = [];
+
+            // Apply filters if table is 'siswa'
+            if ($table === 'siswa' && !empty($filters['tahun_lulus'])) {
+                $query .= " WHERE tahun_lulus = :tahun";
+                $bindings['tahun'] = $filters['tahun_lulus'];
+            }
+
+            $stmt = $pdo->prepare($query);
+            $stmt->execute($bindings);
+            
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $columns = array_keys($row);
                 $values = array_values($row);
                 
