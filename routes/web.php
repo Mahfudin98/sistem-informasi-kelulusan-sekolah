@@ -56,5 +56,21 @@ $router->group('/admin', function (Router $r) {
     $r->get('/siswa/:id/edit',         'Admin\SiswaController@edit',    name: 'admin.siswa.edit');
     $r->post('/siswa/:id/update',      'Admin\SiswaController@update',  ['CsrfMiddleware'], 'admin.siswa.update');
     $r->post('/siswa/:id/delete',      'Admin\SiswaController@destroy', ['CsrfMiddleware'], 'admin.siswa.destroy');
+    $r->post('/siswa/bulk-update',     'Admin\SiswaController@bulkUpdate', ['CsrfMiddleware'], 'admin.siswa.bulk_update');
+
+    // Admin Management
+    $r->get('/users',                  'Admin\UserController@index',    name: 'admin.user.index');
+    $r->get('/users/create',           'Admin\UserController@create',   name: 'admin.user.create');
+    $r->post('/users',                 'Admin\UserController@store',    ['CsrfMiddleware'], 'admin.user.store');
+    $r->get('/users/:id/edit',         'Admin\UserController@edit',     name: 'admin.user.edit');
+    $r->post('/users/:id/update',      'Admin\UserController@update',   ['CsrfMiddleware'], 'admin.user.update');
+    $r->post('/users/:id/delete',      'Admin\UserController@destroy',  ['CsrfMiddleware'], 'admin.user.destroy');
+
+    // Profile
+    $r->get('/my/profile',                'Admin\ProfileController@edit',  name: 'admin.profile.edit');
+    $r->post('/my/profile',               'Admin\ProfileController@update', ['CsrfMiddleware'], 'admin.profile.update');
+
+    // Audit Logs
+    $r->get('/audit-logs',                'Admin\AuditLogController@index', name: 'admin.audit_logs.index');
 
 }, ['AuthMiddleware']);

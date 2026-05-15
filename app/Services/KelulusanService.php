@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Repositories\SiswaRepository;
+use App\Services\AuditService;
 use App\Validation\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -62,11 +63,14 @@ final class KelulusanService
      */
     public function getPaginatedList(
         int    $page,
+        int    $perPage = 15,
         string $search  = '',
         ?int   $tahun   = null,
         ?string $status = null,
+        string $sort    = 'nama',
+        string $order   = 'ASC',
     ): array {
-        return $this->repo->paginate($page, 15, $search, $tahun, $status);
+        return $this->repo->paginate($page, $perPage, $search, $tahun, $status, $sort, $order);
     }
 
     /**
@@ -91,7 +95,10 @@ final class KelulusanService
             ];
         }
 
-        $id = $this->repo->create($this->sanitize($data));
+        $sanitized = $this->sanitize($data);
+        $id = $this->repo->create($sanitized);
+
+        AuditService::log('create', 'siswa', (int)$id, "Menambahkan siswa baru: {$sanitized['nama']} ({$sanitized['nisn']})", null, $sanitized);
 
         return ['success' => true, 'errors' => [], 'id' => $id];
     }
@@ -109,7 +116,11 @@ final class KelulusanService
             return ['success' => false, 'errors' => $validator->errors()];
         }
 
-        $this->repo->update($id, $this->sanitize($data));
+        $old = $this->repo->findById($id);
+        $sanitized = $this->sanitize($data);
+        $this->repo->update($id, $sanitized);
+
+        AuditService::log('update', 'siswa', $id, "Memperbarui data siswa: {$sanitized['nama']}", $old, $sanitized);
 
         return ['success' => true, 'errors' => []];
     }
@@ -119,20 +130,50 @@ final class KelulusanService
      */
     public function delete(int $id): bool
     {
-        return $this->repo->delete($id) > 0;
+        $old = $this->repo->findById($id);
+        $deleted = $this->repo->delete($id) > 0;
+        
+        if ($deleted && $old) {
+            AuditService::log('delete', 'siswa', $id, "Menghapus siswa: {$old['nama']} ({$old['nisn']})", $old);
+        }
+
+        return $deleted;
     }
 
     /**
      * Get aggregate statistics.
      */
-    public function statistik(): array
+    public function statistik(?int $tahun = null): array
     {
-        return $this->repo->statistik();
+        return $this->repo->statistik($tahun);
     }
 
     public function availableYears(): array
     {
         return $this->repo->availableYears();
+    }
+
+    /**
+     * Bulk update status for multiple students.
+     */
+    public function bulkUpdateStatus(array $ids, string $status): array
+    {
+        if (empty($ids)) {
+            return ['success' => false, 'message' => 'Tidak ada siswa yang dipilih.'];
+        }
+
+        if (!in_array($status, ['lulus', 'tidak_lulus'])) {
+            return ['success' => false, 'message' => 'Status tidak valid.'];
+        }
+
+        $count = $this->repo->bulkUpdateStatus($ids, $status);
+
+        AuditService::log('bulk_update', 'siswa', null, "Update massal status menjadi '{$status}' untuk " . count($ids) . " siswa.");
+
+        return [
+            'success' => true,
+            'message' => "Berhasil memperbarui status {$count} siswa.",
+        ];
     }
 
     // ── Bulk Excel ────────────────────────────────────────────────────────────

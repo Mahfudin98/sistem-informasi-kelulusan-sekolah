@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Repositories\ProfilSekolahRepository;
+use App\Services\AuditService;
 use App\Validation\Validator;
 
 final class ProfilSekolahService
@@ -88,7 +89,10 @@ final class ProfilSekolahService
             }
         }
 
+        $old = $this->getProfile();
         $this->repo->updateProfile($updateData);
+
+        AuditService::log('update', 'profil_sekolah', 1, "Memperbarui profil sekolah", $old, $updateData);
 
         return ['success' => true, 'errors' => []];
     }

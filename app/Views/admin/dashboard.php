@@ -1,3 +1,29 @@
+<!-- Dashboard Filter -->
+<div class="bg-surface border border-border rounded-2xl p-6 mb-8 shadow-sm">
+    <form method="GET" action="/admin/dashboard" class="flex flex-col md:flex-row items-end gap-4">
+        <div class="w-full md:w-64">
+            <label class="block text-[0.7rem] font-black uppercase tracking-wider text-text-muted mb-2">Filter Berdasarkan Tahun</label>
+            <select name="tahun" onchange="this.form.submit()" class="w-full bg-white border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-all cursor-pointer">
+                <option value="">-- Semua Tahun --</option>
+                <?php foreach ($years as $year): ?>
+                    <option value="<?= $year ?>" <?= (int)$filterTahun === (int)$year ? 'selected' : '' ?>>Tahun <?= $year ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="flex-1">
+            <?php if ($filterTahun): ?>
+                <div class="flex items-center gap-2 text-sm text-text-muted">
+                    <span class="inline-block w-2 h-2 bg-primary rounded-full"></span>
+                    Menampilkan rekapitulasi untuk tahun <strong class="text-text"><?= e($filterTahun) ?></strong>
+                    <a href="/admin/dashboard" class="ml-2 text-primary hover:underline text-xs font-bold uppercase">Reset Filter</a>
+                </div>
+            <?php else: ?>
+                <div class="text-sm text-text-muted">Menampilkan rekapitulasi keseluruhan tahun.</div>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>
+
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <div class="bg-surface border border-border rounded-2xl p-6 flex items-center gap-5 hover:shadow-md transition-all">

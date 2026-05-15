@@ -22,7 +22,8 @@ final class DashboardController extends BaseController
      */
     public function index(Request $request): void
     {
-        $statistik = $this->service->statistik();
+        $tahun = $request->query('tahun') ? (int) $request->query('tahun') : null;
+        $statistik = $this->service->statistik($tahun);
 
         // Quick summary for top cards
         $totalSiswa  = array_sum(array_column($statistik, 'total'));
@@ -33,12 +34,14 @@ final class DashboardController extends BaseController
             : 0;
 
         $this->view('admin.dashboard', [
-            'title'       => 'Dashboard — ' . env('APP_NAME'),
-            'statistik'   => $statistik,
-            'totalSiswa'  => $totalSiswa,
-            'totalLulus'  => $totalLulus,
-            'totalTidak'  => $totalTidak,
-            'persentase'  => $persentase,
+            'title'        => 'Dashboard — ' . env('APP_NAME'),
+            'statistik'    => $statistik,
+            'totalSiswa'   => $totalSiswa,
+            'totalLulus'   => $totalLulus,
+            'totalTidak'   => $totalTidak,
+            'persentase'   => $persentase,
+            'filterTahun'  => $tahun,
+            'years'        => $this->service->availableYears(),
         ], 'layouts/admin');
     }
 }

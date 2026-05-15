@@ -25,12 +25,15 @@ final class SiswaController extends BaseController
      */
     public function index(Request $request): void
     {
-        $page   = max(1, (int) $request->query('page', 1));
-        $search = $request->query('search', '');
-        $tahun  = $request->query('tahun') ? (int) $request->query('tahun') : null;
-        $status = $request->query('status') ?: null;
+        $page    = max(1, (int) $request->query('page', 1));
+        $perPage = (int) $request->query('limit', 15);
+        $search  = $request->query('search', '');
+        $tahun   = $request->query('tahun') ? (int) $request->query('tahun') : null;
+        $status  = $request->query('status') ?: null;
+        $sort    = $request->query('sort', 'nama');
+        $order   = $request->query('order', 'ASC');
 
-        $result = $this->service->getPaginatedList($page, $search, $tahun, $status);
+        $result = $this->service->getPaginatedList($page, $perPage, $search, $tahun, $status, $sort, $order);
 
         $this->view('admin.siswa.index', [
             'title'        => 'Data Siswa — ' . env('APP_NAME'),
@@ -39,6 +42,9 @@ final class SiswaController extends BaseController
             'search'       => $search,
             'filterTahun'  => $tahun,
             'filterStatus' => $status,
+            'limit'        => $perPage,
+            'sort'         => $sort,
+            'order'        => $order,
             'years'        => $this->service->availableYears(),
         ], 'layouts/admin');
     }
@@ -123,6 +129,24 @@ final class SiswaController extends BaseController
 
         $this->withSuccess('Data siswa berhasil dihapus.')
              ->redirect('/admin/siswa');
+    }
+
+    /**
+     * POST /admin/siswa/bulk-update
+     */
+    public function bulkUpdate(Request $request): void
+    {
+        $ids    = (array) ($request->body['ids'] ?? []);
+        $status = (string) ($request->body['status'] ?? '');
+
+        $result = $this->service->bulkUpdateStatus($ids, $status);
+
+        if (!$result['success']) {
+            $this->withError($result['message'])->redirect('/admin/siswa');
+            return;
+        }
+
+        $this->withSuccess($result['message'])->redirect('/admin/siswa');
     }
 
     // ── Show ──────────────────────────────────────────────────────────────────

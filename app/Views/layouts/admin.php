@@ -47,9 +47,23 @@
             <span class="text-xl">👥</span> Data Siswa
         </a>
         <a href="/admin/profil"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= str_contains($_SERVER['REQUEST_URI'] ?? '', '/profil') ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary' : 'text-text-muted hover:bg-white/5' ?>">
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/profil') ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary' : 'text-text-muted hover:bg-white/5' ?>">
             <span class="text-xl">🏫</span> Profil Sekolah
         </a>
+        <a href="/admin/users"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/users') ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary' : 'text-text-muted hover:bg-white/5' ?>">
+            <span class="text-xl">🔐</span> Manajemen Admin
+        </a>
+        <a href="/admin/my/profile"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/profile') ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary' : 'text-text-muted hover:bg-white/5' ?>">
+            <span class="text-xl">👤</span> Profil Saya
+        </a>
+        <?php if ((session('user')['role'] ?? '') === 'superadmin'): ?>
+        <a href="/admin/audit-logs"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= str_contains($_SERVER['REQUEST_URI'] ?? '', '/admin/audit-logs') ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary' : 'text-text-muted hover:bg-white/5' ?>">
+            <span class="text-xl">📜</span> Log Audit
+        </a>
+        <?php endif; ?>
     </nav>
 
     <div class="p-6 border-t border-border bg-white/2">

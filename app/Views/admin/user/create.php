@@ -1,0 +1,68 @@
+<div class="max-w-2xl mx-auto">
+    <div class="mb-6 flex items-center justify-between">
+        <h2 class="text-xl font-bold text-text">➕ Tambah Admin Baru</h2>
+        <a href="/admin/users" class="text-sm font-bold text-text-muted hover:text-text transition-all">← Kembali</a>
+    </div>
+
+    <div class="bg-surface border border-border rounded-2xl shadow-sm overflow-hidden">
+        <form action="/admin/users" method="POST" class="p-8">
+            <?= csrf_field() ?>
+
+            <div class="grid gap-6">
+                <!-- Name -->
+                <div>
+                    <label class="block text-[0.7rem] font-black uppercase tracking-wider text-text-muted mb-2">Nama Lengkap</label>
+                    <input type="text" name="name" value="<?= old('name') ?>" required
+                        class="w-full bg-white border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-all"
+                        placeholder="Contoh: Administrator">
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Username -->
+                    <div>
+                        <label class="block text-[0.7rem] font-black uppercase tracking-wider text-text-muted mb-2">Username</label>
+                        <input type="text" name="username" value="<?= old('username') ?>" required
+                            class="w-full bg-white border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-all"
+                            placeholder="username_admin">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-[0.7rem] font-black uppercase tracking-wider text-text-muted mb-2">Email</label>
+                        <input type="email" name="email" value="<?= old('email') ?>" required
+                            class="w-full bg-white border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-all"
+                            placeholder="admin@sekolah.sch.id">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-[0.7rem] font-black uppercase tracking-wider text-text-muted mb-2">Password</label>
+                        <input type="password" name="password" required
+                            class="w-full bg-white border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-all"
+                            placeholder="••••••••">
+                    </div>
+
+                    <!-- Role -->
+                    <div>
+                        <label class="block text-[0.7rem] font-black uppercase tracking-wider text-text-muted mb-2">Role</label>
+                        <select name="role" required
+                            class="w-full bg-white border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-all">
+                            <option value="admin" <?= old('role') === 'admin' ? 'selected' : '' ?>>Admin</option>
+                            <?php if ($currentRole === 'superadmin'): ?>
+                            <option value="superadmin" <?= old('role') === 'superadmin' ? 'selected' : '' ?>>Superadmin</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-border flex justify-end">
+                <button type="submit" class="bg-primary text-white font-bold py-3 px-8 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+                    Simpan Admin
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

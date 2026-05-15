@@ -67,3 +67,258 @@ Trace:
 #6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
 #7 {main}
 --------------------------------------------------------------------------------
+[2026-05-15 14:13:00] TypeError: App\Services\KelulusanService::getPaginatedList(): Argument #2 ($perPage) must be of type int, string given, called in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php on line 33 in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\KelulusanService.php:63
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(33): App\Services\KelulusanService->getPaginatedList(1, '', NULL, NULL)
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#10 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:13:12] TypeError: App\Services\KelulusanService::getPaginatedList(): Argument #2 ($perPage) must be of type int, string given, called in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php on line 33 in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\KelulusanService.php:63
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(33): App\Services\KelulusanService->getPaginatedList(1, '', NULL, NULL)
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#10 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:13:19] TypeError: App\Services\KelulusanService::getPaginatedList(): Argument #2 ($perPage) must be of type int, string given, called in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php on line 33 in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\KelulusanService.php:63
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(33): App\Services\KelulusanService->getPaginatedList(1, '', NULL, NULL)
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#10 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:13:48] Error: Call to undefined function sort_link() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\siswa\index.php:75
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.siswa.ind...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.siswa.ind...', Array, 'layouts/admin')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(38): App\Controllers\BaseController->view('admin.siswa.ind...', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#13 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:13:53] Error: Call to undefined function sort_link() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\siswa\index.php:75
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.siswa.ind...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.siswa.ind...', Array, 'layouts/admin')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(38): App\Controllers\BaseController->view('admin.siswa.ind...', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#13 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:13:54] Error: Call to undefined function sort_link() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\siswa\index.php:75
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.siswa.ind...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.siswa.ind...', Array, 'layouts/admin')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(38): App\Controllers\BaseController->view('admin.siswa.ind...', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#13 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:13:55] Error: Call to undefined function sort_link() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\siswa\index.php:75
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.siswa.ind...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.siswa.ind...', Array, 'layouts/admin')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(38): App\Controllers\BaseController->view('admin.siswa.ind...', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#13 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:14:34] Error: Call to undefined function sort_link() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\siswa\index.php:75
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.siswa.ind...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.siswa.ind...', Array, 'layouts/admin')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(38): App\Controllers\BaseController->view('admin.siswa.ind...', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#13 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:16:07] PDOException: SQLSTATE[HY093]: Invalid parameter number in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Database.php:52
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Database.php(52): PDOStatement->execute(Array)
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Database.php(61): App\Core\Database->query('SELECT COUNT(*)...', Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Repositories\SiswaRepository.php(65): App\Core\Database->fetchOne('SELECT COUNT(*)...', Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\KelulusanService.php(72): App\Repositories\SiswaRepository->paginate(1, 100, '1234567890', NULL, NULL, 'nama', 'ASC')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\SiswaController.php(36): App\Services\KelulusanService->getPaginatedList(1, 100, '1234567890', NULL, NULL, 'nama', 'ASC')
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\SiswaController->index(Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\SiswaCont...', Object(App\Core\Request), Array)
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#13 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#14 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:21:56] Error: Call to undefined method App\Repositories\UserRepository::findAll() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\UserService.php:26
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\UserController.php(24): App\Services\UserService->getAll()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\UserController->index(Object(App\Core\Request), Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\UserContr...', Object(App\Core\Request), Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#10 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:22:05] Error: Call to undefined method App\Repositories\UserRepository::findAll() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\UserService.php:26
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\UserController.php(24): App\Services\UserService->getAll()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\UserController->index(Object(App\Core\Request), Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\UserContr...', Object(App\Core\Request), Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#10 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:22:06] Error: Call to undefined method App\Repositories\UserRepository::findAll() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\UserService.php:26
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\UserController.php(24): App\Services\UserService->getAll()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\UserController->index(Object(App\Core\Request), Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\UserContr...', Object(App\Core\Request), Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#10 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:22:31] Error: Call to undefined method App\Repositories\UserRepository::findAll() in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Services\UserService.php:26
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\UserController.php(24): App\Services\UserService->getAll()
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\UserController->index(Object(App\Core\Request), Array)
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\UserContr...', Object(App\Core\Request), Array)
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#10 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:30:58] ErrorException: Array to string conversion in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\dashboard.php:9
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\dashboard.php(9): App\Core\ExceptionHandler::handleError(2, 'Array to string...', 'C:\\Users\\mahfu\\...', 9)
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require('C:\\Users\\mahfu\\...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.dashboard')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.dashboard', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\DashboardController.php(36): App\Controllers\BaseController->view('admin.dashboard', Array, 'layouts/admin')
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\DashboardController->index(Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\Dashboard...', Object(App\Core\Request), Array)
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#13 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#14 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:31:06] ErrorException: Array to string conversion in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\dashboard.php:9
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\dashboard.php(9): App\Core\ExceptionHandler::handleError(2, 'Array to string...', 'C:\\Users\\mahfu\\...', 9)
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require('C:\\Users\\mahfu\\...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.dashboard')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.dashboard', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\DashboardController.php(36): App\Controllers\BaseController->view('admin.dashboard', Array, 'layouts/admin')
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\DashboardController->index(Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\Dashboard...', Object(App\Core\Request), Array)
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#13 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#14 {main}
+--------------------------------------------------------------------------------
+[2026-05-15 14:31:07] ErrorException: Array to string conversion in C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\dashboard.php:9
+Trace:
+#0 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Views\admin\dashboard.php(9): App\Core\ExceptionHandler::handleError(2, 'Array to string...', 'C:\\Users\\mahfu\\...', 9)
+#1 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(63): require('C:\\Users\\mahfu\\...')
+#2 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\View.php(29): App\Core\View->display('admin.dashboard')
+#3 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\BaseController.php(29): App\Core\View::render('admin.dashboard', Array, 'layouts/admin')
+#4 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Controllers\Admin\DashboardController.php(36): App\Controllers\BaseController->view('admin.dashboard', Array, 'layouts/admin')
+#5 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(183): App\Controllers\Admin\DashboardController->index(Object(App\Core\Request), Array)
+#6 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(168): App\Core\Router->invokeHandler('Admin\\Dashboard...', Object(App\Core\Request), Array)
+#7 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Middleware\AuthMiddleware.php(26): App\Core\Router->{closure:App\Core\Router::handle():167}(Object(App\Core\Request))
+#8 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(28): App\Middleware\AuthMiddleware->handle(Object(App\Core\Request), Object(Closure))
+#9 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Middleware\MiddlewarePipeline.php(31): App\Core\Middleware\MiddlewarePipeline->{closure:App\Core\Middleware\MiddlewarePipeline::run():28}(Object(App\Core\Request))
+#10 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(167): App\Core\Middleware\MiddlewarePipeline->run(Object(App\Core\Request), Object(Closure))
+#11 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Router.php(86): App\Core\Router->handle(Array, Object(App\Core\Request), Array)
+#12 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\app\Core\Application.php(75): App\Core\Router->dispatch(Object(App\Core\Request))
+#13 C:\Users\mahfu\OneDrive\Desktop\Project\app-kelulusan\public\index.php(24): App\Core\Application->run()
+#14 {main}
+--------------------------------------------------------------------------------

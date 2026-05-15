@@ -38,13 +38,16 @@ final class SiswaRepository extends BaseRepository
         string  $search  = '',
         ?int    $tahun   = null,
         ?string $status  = null,
+        string  $sort    = 'nama',
+        string  $order   = 'ASC'
     ): array {
         $conditions = ['1=1'];
         $bindings   = [];
 
         if ($search !== '') {
-            $conditions[] = "(nisn LIKE :search OR nama LIKE :search)";
-            $bindings['search'] = "%{$search}%";
+            $conditions[] = "(nisn LIKE :search1 OR nama LIKE :search2)";
+            $bindings['search1'] = "%{$search}%";
+            $bindings['search2'] = "%{$search}%";
         }
 
         if ($tahun !== null) {
@@ -65,12 +68,17 @@ final class SiswaRepository extends BaseRepository
             $bindings,
         )['c'] ?? 0);
 
+        // Sort validation
+        $allowedSort = ['nama', 'nisn', 'tahun_lulus', 'jurusan', 'status_kelulusan', 'nilai_rata_rata'];
+        $sortColumn  = in_array($sort, $allowedSort) ? $sort : 'nama';
+        $sortOrder   = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+
         $data = $this->db->fetchAll(
             "SELECT * FROM {$this->table}
               WHERE {$where}
-           ORDER BY nama ASC
-              LIMIT :limit OFFSET :offset",
-            array_merge($bindings, ['limit' => $perPage, 'offset' => $offset]),
+           ORDER BY {$sortColumn} {$sortOrder}
+              LIMIT {$perPage} OFFSET {$offset}",
+            $bindings,
         );
 
         return [
@@ -85,8 +93,11 @@ final class SiswaRepository extends BaseRepository
     /**
      * Aggregate statistics grouped by graduation year.
      */
-    public function statistik(): array
+    public function statistik(?int $tahun = null): array
     {
+        $where = $tahun ? "WHERE tahun_lulus = :tahun" : "";
+        $bindings = $tahun ? ['tahun' => $tahun] : [];
+
         return $this->db->fetchAll(
             "SELECT tahun_lulus,
                     COUNT(*) AS total,
@@ -94,8 +105,10 @@ final class SiswaRepository extends BaseRepository
                     SUM(status_kelulusan = 'tidak_lulus') AS tidak_lulus,
                     ROUND(AVG(nilai_rata_rata), 2) AS rata_nilai
                FROM {$this->table}
+               {$where}
            GROUP BY tahun_lulus
-           ORDER BY tahun_lulus DESC"
+           ORDER BY tahun_lulus DESC",
+            $bindings
         );
     }
 
@@ -104,8 +117,26 @@ final class SiswaRepository extends BaseRepository
      */
     public function availableYears(): array
     {
-        return $this->db->fetchAll(
+        $rows = $this->db->fetchAll(
             "SELECT DISTINCT tahun_lulus FROM {$this->table} ORDER BY tahun_lulus DESC"
         );
+        return array_column($rows, 'tahun_lulus');
+    }
+
+    /**
+     * Bulk update student graduation status.
+     *
+     * @param int[] $ids
+     */
+    public function bulkUpdateStatus(array $ids, string $status): int
+    {
+        if (empty($ids)) {
+            return 0;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "UPDATE {$this->table} SET status_kelulusan = ? WHERE id IN ($placeholders)";
+        
+        return $this->db->query($sql, array_merge([$status], $ids))->rowCount();
     }
 }

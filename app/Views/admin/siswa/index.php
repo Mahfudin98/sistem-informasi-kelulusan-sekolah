@@ -1,3 +1,16 @@
+<?php
+function sort_link($col, $currentSort, $currentOrder) {
+    $params = $_GET;
+    $params['sort'] = $col;
+    $params['order'] = ($col === $currentSort && $currentOrder === 'ASC') ? 'DESC' : 'ASC';
+    return '/admin/siswa?' . http_build_query($params);
+}
+
+function sort_icon($col, $currentSort, $currentOrder) {
+    if ($col !== $currentSort) return '↕️';
+    return $currentOrder === 'ASC' ? '🔼' : '🔽';
+}
+?>
 <div class="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm animate-fade-in">
     <div class="flex items-center justify-between p-6 border-b border-border flex-wrap gap-4">
         <h2 class="text-lg font-bold">👥 Data Siswa</h2>
@@ -28,6 +41,13 @@
                     <option value="tidak_lulus" <?= $filterStatus === 'tidak_lulus' ? 'selected' : '' ?>>Tidak Lulus</option>
                 </select>
             </div>
+            <div>
+                <select name="limit" class="w-full bg-white border border-border rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-primary transition-all">
+                    <?php foreach([10, 15, 25, 50, 100] as $l): ?>
+                        <option value="<?= $l ?>" <?= $limit == $l ? 'selected' : '' ?>>Show <?= $l ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <button type="submit" class="bg-primary text-white font-bold py-2 px-4 rounded-xl hover:opacity-90 transition-all cursor-pointer">Filter</button>
             <a href="/admin/siswa" class="bg-white border border-border rounded-xl px-4 py-2 text-sm hover:border-primary focus:outline-none focus:border-primary transition-all">Reset</a>
         </form>
@@ -40,21 +60,64 @@
                 <p class="text-text-muted">Data siswa tidak ditemukan.</p>
             </div>
         <?php else: ?>
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse text-sm">
-                <thead>
-                    <tr class="bg-slate-50">
-                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Siswa</th>
-                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Tahun Lulus</th>
-                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Jurusan</th>
-                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Status</th>
-                        <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Rata-rata</th>
-                        <th class="px-4 py-3 text-center text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Aksi</th>
-                    </tr>
+        <!-- Bulk Action Bar -->
+        <div id="bulk-action-bar" class="hidden mb-6 p-4 bg-primary/5 border border-primary/20 rounded-xl flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-300">
+            <div class="flex items-center gap-3">
+                <span class="text-sm font-bold text-primary"><span id="selected-count">0</span> Siswa Terpilih</span>
+                <div class="h-4 w-px bg-primary/20"></div>
+                <p class="text-[0.7rem] text-text-muted font-medium uppercase tracking-wider">Ubah Status Menjadi:</p>
+            </div>
+            <div class="flex gap-2">
+                <button type="button" onclick="submitBulk('lulus')" class="bg-emerald-500 text-white text-[0.7rem] font-black uppercase tracking-wider py-2 px-4 rounded-lg hover:bg-emerald-600 transition-all cursor-pointer">Lulus</button>
+                <button type="button" onclick="submitBulk('tidak_lulus')" class="bg-rose-500 text-white text-[0.7rem] font-black uppercase tracking-wider py-2 px-4 rounded-lg hover:bg-rose-600 transition-all cursor-pointer">Tidak Lulus</button>
+                <button type="button" onclick="resetSelection()" class="text-[0.7rem] font-bold text-text-muted hover:text-text px-2 transition-all cursor-pointer">Batal</button>
+            </div>
+        </div>
+
+        <form id="bulk-form" method="POST" action="/admin/siswa/bulk-update">
+            <?= csrf_field() ?>
+            <input type="hidden" name="status" id="bulk-status-input">
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-50">
+                            <th class="w-10 px-4 py-3 border-b border-border">
+                                <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-border text-primary focus:ring-primary cursor-pointer">
+                            </th>
+                            <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">
+                                <a href="<?= sort_link('nama', $sort, $order) ?>" class="flex items-center gap-1 hover:text-primary transition-colors">
+                                    Siswa <?= sort_icon('nama', $sort, $order) ?>
+                                </a>
+                            </th>
+                            <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">
+                                <a href="<?= sort_link('tahun_lulus', $sort, $order) ?>" class="flex items-center gap-1 hover:text-primary transition-colors">
+                                    Tahun Lulus <?= sort_icon('tahun_lulus', $sort, $order) ?>
+                                </a>
+                            </th>
+                            <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">
+                                <a href="<?= sort_link('jurusan', $sort, $order) ?>" class="flex items-center gap-1 hover:text-primary transition-colors">
+                                    Jurusan <?= sort_icon('jurusan', $sort, $order) ?>
+                                </a>
+                            </th>
+                            <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">
+                                <a href="<?= sort_link('status_kelulusan', $sort, $order) ?>" class="flex items-center gap-1 hover:text-primary transition-colors">
+                                    Status <?= sort_icon('status_kelulusan', $sort, $order) ?>
+                                </a>
+                            </th>
+                            <th class="px-4 py-3 text-left text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">
+                                <a href="<?= sort_link('nilai_rata_rata', $sort, $order) ?>" class="flex items-center gap-1 hover:text-primary transition-colors">
+                                    Rata-rata <?= sort_icon('nilai_rata_rata', $sort, $order) ?>
+                                </a>
+                            </th>
+                            <th class="px-4 py-3 text-center text-[0.7rem] font-bold text-text-muted uppercase tracking-wider border-b border-border">Aksi</th>
+                        </tr>
                 </thead>
                 <tbody class="divide-y divide-border">
                     <?php foreach ($siswa as $s): ?>
                     <tr class="hover:bg-slate-50/50 transition-colors">
+                        <td class="px-4 py-4 text-center">
+                            <input type="checkbox" name="ids[]" value="<?= e($s['id']) ?>" class="siswa-checkbox w-4 h-4 rounded border-border text-primary focus:ring-primary cursor-pointer">
+                        </td>
                         <td class="px-4 py-4">
                             <div class="flex flex-col">
                                 <span class="font-extrabold text-text"><?= e($s['nama']) ?></span>
@@ -89,8 +152,9 @@
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
-            </table>
-        </div>
+                </table>
+            </div>
+        </form>
 
         <!-- Pagination -->
         <div class="flex flex-wrap items-center justify-between gap-4 mt-8 border-t border-border pt-6">
@@ -101,8 +165,64 @@
                 'search' => $search,
                 'tahun'  => $filterTahun,
                 'status' => $filterStatus,
+                'limit'  => $limit,
+                'sort'   => $sort,
+                'order'  => $order,
             ]))) ?>
         </div>
         <?php endif; ?>
     </div>
 </div>
+
+<script>
+    const selectAll = document.getElementById('select-all');
+    const checkboxes = document.querySelectorAll('.siswa-checkbox');
+    const bulkBar = document.getElementById('bulk-action-bar');
+    const selectedCount = document.getElementById('selected-count');
+    const bulkForm = document.getElementById('bulk-form');
+    const bulkStatusInput = document.getElementById('bulk-status-input');
+
+    function updateBulkBar() {
+        const checked = document.querySelectorAll('.siswa-checkbox:checked').length;
+        selectedCount.textContent = checked;
+        
+        if (checked > 0) {
+            bulkBar.classList.remove('hidden');
+        } else {
+            bulkBar.classList.add('hidden');
+            selectAll.checked = false;
+        }
+    }
+
+    selectAll.addEventListener('change', function() {
+        checkboxes.forEach(cb => {
+            cb.checked = selectAll.checked;
+        });
+        updateBulkBar();
+    });
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            if (!this.checked) {
+                selectAll.checked = false;
+            } else {
+                const allChecked = Array.from(checkboxes).every(c => c.checked);
+                selectAll.checked = allChecked;
+            }
+            updateBulkBar();
+        });
+    });
+
+    function resetSelection() {
+        checkboxes.forEach(cb => cb.checked = false);
+        selectAll.checked = false;
+        updateBulkBar();
+    }
+
+    function submitBulk(status) {
+        if (confirm(`Ubah status ${document.querySelectorAll('.siswa-checkbox:checked').length} siswa menjadi ${status.replace('_', ' ')}?`)) {
+            bulkStatusInput.value = status;
+            bulkForm.submit();
+        }
+    }
+</script>

@@ -297,3 +297,17 @@ if (!function_exists('get_contrast_color')) {
         return ($yiq >= 128) ? '#000000' : '#ffffff';
     }
 }
+
+if (!function_exists('auth')) {
+    /**
+     * Get the authentication service instance.
+     */
+    function auth(): \App\Services\AuthService
+    {
+        static $auth = null;
+        if ($auth === null) {
+            $auth = new \App\Services\AuthService();
+        }
+        return $auth;
+    }
+}

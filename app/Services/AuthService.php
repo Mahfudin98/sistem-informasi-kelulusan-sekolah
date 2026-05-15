@@ -81,4 +81,32 @@ final class AuthService
     {
         return Session::has('user');
     }
+
+    /**
+     * Get current user ID.
+     */
+    public function id(): ?int
+    {
+        return Session::get('user')['id'] ?? null;
+    }
+
+    /**
+     * Refresh the session data from DB.
+     */
+    public function refreshSession(): void
+    {
+        $id = $this->id();
+        if (!$id) return;
+
+        $user = $this->userRepo->findById($id);
+        if ($user) {
+            Session::set('user', [
+                'id'       => $user['id'],
+                'name'     => $user['name'],
+                'username' => $user['username'],
+                'email'    => $user['email'],
+                'role'     => $user['role'] ?? 'admin',
+            ]);
+        }
+    }
 }
