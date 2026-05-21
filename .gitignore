@@ -1,9 +1,23 @@
 vendor/
 node_modules/
 .env
-storage/logs/*
+.env.backup
+.env.*
+
+# License Files
+license.key
+license.key.backup
+
+# Storage & Caches
+storage/*
+!storage/.gitignore
 !storage/logs/.gitignore
-public/uploads/.gitignore
+!storage/backup/.gitignore
+
+# Uploads
+public/uploads/*
 !public/uploads/.gitignore
+
+# OS generated files
 .DS_Store
 Thumbs.db

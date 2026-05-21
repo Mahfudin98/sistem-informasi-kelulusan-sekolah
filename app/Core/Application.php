@@ -35,6 +35,10 @@ final class Application
      */
     private function loadEnvironment(): void
     {
+        if (!file_exists(ROOT_PATH . '/.env')) {
+            return; // Skip loading, will be handled by installer
+        }
+
         $dotenv = Dotenv::createImmutable(ROOT_PATH);
         $dotenv->load();
 
@@ -70,8 +74,32 @@ final class Application
      */
     public function run(): void
     {
+        $request = new Request();
+        
+        // --- INSTALLER INTERCEPT ---
+        if (!file_exists(ROOT_PATH . '/.env')) {
+            require_once ROOT_PATH . '/routes/installer.php';
+            exit;
+        }
+        // ---------------------------
+
+        // --- LICENSE LOCK ---
+        $exemptPaths = ['/license-error', '/setup', '/api/license/sync'];
+
+        if (!in_array($request->path, $exemptPaths)) {
+            $status = \App\Services\LicenseService::checkStatus();
+            if ($status === 'missing') {
+                header('Location: /setup');
+                exit;
+            } elseif ($status === 'invalid') {
+                header('Location: /license-error');
+                exit;
+            }
+        }
+        // --------------------
+
         $router = $this->router;
         require_once ROOT_PATH . '/routes/web.php';
-        $this->router->dispatch(new Request());
+        $this->router->dispatch($request);
     }
 }

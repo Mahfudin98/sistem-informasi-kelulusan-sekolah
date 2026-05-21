@@ -55,6 +55,9 @@ final class AuthService
 
         $this->userRepo->updateLastLogin((int) $user['id']);
 
+        // Log Audit
+        AuditService::log('login', 'user', (int) $user['id'], "User logged in: {$user['username']}");
+
         return ['success' => true, 'message' => 'Login berhasil.'];
     }
 
@@ -63,6 +66,10 @@ final class AuthService
      */
     public function logout(): void
     {
+        $user = Session::get('user');
+        if ($user) {
+            AuditService::log('logout', 'user', (int) $user['id'], "User logged out: {$user['username']}");
+        }
         Session::destroy();
     }
 

@@ -37,7 +37,7 @@ final class AuditService
             $user = Session::get('user');
             
             self::getRepo()->create([
-                'user_id'     => $user['id'] ?? null,
+                'user_id'     => isset($user['id']) ? (int) $user['id'] : null,
                 'username'    => $user['username'] ?? 'guest',
                 'action'      => $action,
                 'entity'      => $entity,

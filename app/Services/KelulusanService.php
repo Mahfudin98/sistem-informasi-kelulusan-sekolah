@@ -290,8 +290,10 @@ final class KelulusanService
 
         // Headers
         $headers = ['NISN', 'Nama Lengkap', 'Tempat Lahir', 'Tanggal Lahir (YYYY-MM-DD)', 'L/P', 'Jurusan', 'Tahun Lulus', 'lulus/tidak_lulus', 'Nilai Rata-rata', 'Keterangan'];
+        $colLetters = ['A','B','C','D','E','F','G','H','I','J'];
         foreach ($headers as $i => $h) {
-            $sheet->setCellValueByColumnAndRow($i + 1, 1, $h);
+            $col = $colLetters[$i] . '1';
+            $sheet->setCellValue($col, $h);
         }
 
         // Add one example row
@@ -323,9 +325,11 @@ final class KelulusanService
 
         // Headers
         $headers = ['NISN', 'Nama Lengkap', 'Tempat Lahir', 'Tanggal Lahir', 'L/P', 'Jurusan', 'Tahun Lulus', 'Status', 'Nilai', 'Keterangan'];
+        $colLetters = ['A','B','C','D','E','F','G','H','I','J'];
         foreach ($headers as $i => $h) {
-            $sheet->setCellValueByColumnAndRow($i + 1, 1, $h);
-            $sheet->getStyleByColumnAndRow($i + 1, 1)->getFont()->setBold(true);
+            $col = $colLetters[$i] . '1';
+            $sheet->setCellValue($col, $h);
+            $sheet->getStyle($col)->getFont()->setBold(true);
         }
 
         $rowIdx = 2;

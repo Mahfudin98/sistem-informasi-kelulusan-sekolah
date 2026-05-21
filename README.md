@@ -73,3 +73,45 @@ Aplikasi ini menggunakan **Pest Framework** untuk pengujian otomatis.
 - `routes/`: Definisi routing aplikasi (`web.php`).
 - `storage/`: Tempat penyimpanan file log, dll.
 - `config/`: Konfigurasi tambahan aplikasi (opsional).
+## Manajemen Lisensi (Untuk Penjual)
+
+Aplikasi ini dilengkapi dengan sistem proteksi lisensi. Source code aplikasi **App Kelulusan** telah dipisahkan dari alat pembuat lisensinya (Keygen) demi keamanan.
+
+### Persiapan Keamanan:
+Sebelum menjual source code aplikasi ini, **UBAH KATA SANDI RAHASIA ANDA**:
+1. Buka file `app/Services/LicenseService.php`.
+2. Ubah isi variabel `SECRET_SALT` (contoh: `PerusahaanSaya_2025_Un1qu3`).
+3. Ingat baik-baik `SECRET_SALT` ini, karena Anda akan membutuhkannya saat men-generate kunci untuk pembeli.
+
+### Cara Generate Lisensi untuk Pembeli Baru:
+> **PENTING:** Alat pembuat lisensi berada di luar folder aplikasi ini, tepatnya di folder `keygen-kelulusan`. JANGAN PERNAH memberikan folder `keygen-kelulusan` kepada pembeli!
+
+1. Buka terminal/command prompt.
+2. Masuk ke folder pembuat lisensi Anda:
+   ```bash
+   cd c:\Users\mahfu\OneDrive\Desktop\Project\keygen-kelulusan
+   ```
+3. Jalankan aplikasi Keygen:
+   ```bash
+   php generate.php
+   ```
+4. Jawab pertanyaan di terminal:
+   - Masukkan `Secret Salt` yang sama persis dengan yang Anda tulis di `LicenseService.php`.
+   - Masukkan nama **Domain** sekolah pembeli (contoh: `smk1-jakarta.sch.id`).
+5. Salin kode LISENSI panjang yang dihasilkan oleh terminal.
+6. Berikan kode tersebut kepada pembeli.
+
+### Cara Pembeli Mengaktifkan Aplikasi:
+Aplikasi ini sudah dilengkapi dengan **Sistem Instalasi Otomatis (Auto-Installer)**. Pembeli **TIDAK PERLU** lagi menyentuh kode, membuat file `.env`, atau mengeksekusi script database secara manual.
+
+1. Pembeli cukup mengunggah *source code* ke server/hosting mereka.
+2. Buat sebuah database kosong di MySQL/MariaDB (misal: `app_kelulusan`).
+3. Saat pembeli membuka website mereka untuk pertama kalinya, mereka akan otomatis dialihkan ke halaman **Setup Instalasi** (`/setup`).
+4. Di halaman tersebut, pembeli tinggal mengisi:
+   - Nama & URL Aplikasi
+   - Kredensial Database (Host, User, Password, Nama DB)
+   - **License Key** yang sudah Anda berikan.
+5. Klik **Install Aplikasi Sekarang**. 
+6. Sistem akan otomatis menghubungkan database, menjalankan semua migrasi tabel, dan menyimpan konfigurasi. Jika lisensi valid, aplikasi akan langsung terbuka secara permanen!
+
+> **PENTING:** Kode lisensi secara ketat mendeteksi nama domain (termasuk *subdomain*). Jika lisensi dibuat untuk `sekolah.sch.id`, maka tidak akan bisa dipakai di `app.sekolah.sch.id`. Anda harus membuat kunci yang persis sama dengan domain yang digunakan pembeli.

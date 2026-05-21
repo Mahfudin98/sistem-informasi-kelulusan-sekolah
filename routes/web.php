@@ -13,6 +13,94 @@ use App\Core\Router;
 
 /** @var Router $router */
 
+$router->post('/api/license/sync', function() {
+    \App\Services\LicenseService::sync();
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'message' => 'License synced']);
+});
+
+$router->get('/license-error', function() {
+    echo "<!DOCTYPE html>
+          <html lang='id'>
+          <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Lisensi Tidak Valid</title>
+          </head>
+          <body style='background:#f1f5f9;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;'>
+            <div style='background:white;padding:40px;border-radius:24px;box-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1);text-align:center;max-width:400px;'>
+                <h1 style='font-size:48px;margin:0;'>🔒</h1>
+                <h2 style='color:#1e293b;margin:20px 0 10px;'>Lisensi Tidak Valid</h2>
+                <p style='color:#64748b;font-size:14px;line-height:1.6;'>Lisensi untuk domain ini tidak ditemukan atau telah dibekukan. Silakan hubungi pengembang.</p>
+                <div style='margin-top:25px;padding:15px;background:#f8fafc;border-radius:12px;font-family:monospace;font-size:12px;color:#94a3b8;'>
+                    Domain Target: " . ($_SERVER['HTTP_HOST'] ?? 'unknown') . "
+                </div>
+                <a href='/setup' style='display:inline-block;margin-top:20px;color:#3b82f6;text-decoration:none;font-size:14px;font-weight:600;'>Masukkan Kunci Baru &rarr;</a>
+            </div>
+          </body>
+          </html>";
+});
+
+$router->get('/setup', function() {
+    if (\App\Services\LicenseService::checkStatus() === 'valid') {
+        header('Location: /');
+        exit;
+    }
+
+    $domain = $_SERVER['HTTP_HOST'] ?? 'unknown';
+    
+    echo "<!DOCTYPE html>
+          <html lang='id'>
+          <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Setup Aplikasi</title>
+          </head>
+          <body style='background:#f1f5f9;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;'>
+            <div style='background:white;padding:40px;border-radius:24px;box-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1);max-width:450px;width:100%;'>
+                <div style='text-align:center;'>
+                    <h1 style='font-size:40px;margin:0;'>🚀</h1>
+                    <h2 style='color:#1e293b;margin:15px 0 5px;'>Aktivasi Aplikasi</h2>
+                    <p style='color:#64748b;font-size:14px;line-height:1.5;margin-bottom:25px;'>Masukkan email yang Anda gunakan saat pembelian untuk mengaktifkan aplikasi di domain ini.</p>
+                </div>
+                
+                <form method='POST' action='/setup'>
+                    <div style='margin-bottom:15px;'>
+                        <label style='display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px;'>Domain Anda (Otomatis)</label>
+                        <input type='text' disabled value='{$domain}' style='width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#64748b;box-sizing:border-box;'>
+                    </div>
+                    <div style='margin-bottom:25px;'>
+                        <label style='display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px;'>Email Pembelian</label>
+                        <input type='email' name='email' required placeholder='nama@email.com' style='width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;box-sizing:border-box;'>
+                    </div>
+                    <button type='submit' style='width:100%;background:#3b82f6;color:white;border:none;padding:14px;border-radius:8px;font-weight:600;cursor:pointer;font-size:15px;transition:0.2s;'>Aktifkan Lisensi</button>
+                </form>
+            </div>
+          </body>
+          </html>";
+});
+
+$router->post('/setup', function() {
+    $request = new \App\Core\Request();
+    $email = $request->input('email');
+    
+    if (empty($email)) {
+        header('Location: /setup?error=empty');
+        exit;
+    }
+
+    $result = \App\Services\LicenseService::activate($email);
+
+    if ($result['success']) {
+        header('Location: /');
+        exit;
+    } else {
+        $msg = addslashes($result['message']);
+        echo "<script>alert('{$msg}'); window.location.href='/setup';</script>";
+        exit;
+    }
+});
+
 // ============================================================
 // PUBLIC ROUTES
 // ============================================================
